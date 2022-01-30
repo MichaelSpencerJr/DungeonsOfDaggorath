@@ -78,6 +78,16 @@
 ;    include all game files
 ;
 ;
+        ;lwasm compatibility
+        pragma  nodollarlocal,6809
+
+        ;Assembler listing output generally contains commented macro invocations
+        ;followed by the expanded form of the called macro, which is then assembled.
+        ;Where possible I tried to recreate original source code by un-expanding these
+        ;macro invocations.  Some macros had missing definitions, which were recreated.
+        ;Since these recreated macros were not original, I am moving them to a separate file.
+        include missing-macros.asm
+
         INCLUDE CD.ASM           ;Common Definition File
         INCLUDE ONCE.ASM         ;Once only Initialization
         INCLUDE COMMON.ASM       ;Common Operating System Routines

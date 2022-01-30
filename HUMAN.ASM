@@ -86,7 +86,7 @@ PLAY50  LDA     #I.CR           ;terminate commands with return
         BSR     HUMAN           ;   .
         STY     AUTPTR          ;update ptr
 ;
-PLAY99  LDD     #(1*256)+Q.JIF  ;once per jiffy
+PLAY99  SCHED$  1,Q.JIF         ;once per jiffy
         RTS
 
 
