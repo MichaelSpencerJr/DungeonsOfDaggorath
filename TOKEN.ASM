@@ -502,23 +502,18 @@ GENNUM  EQU     FOO
 ;
 ;  Auto-Play Commands
 ;
-ATM1    MACR
-        FCB     1
-        FDB     \1
-        ENDM
-
-ATM2    MACR
-        FCB     2
-        FDB     \1
-        FDB     \2
-        ENDM
-
-ATM3    MACR
-        FCB     3
-        FDB     \1
-        FDB     \2
-        FDB     \3
-        ENDM
+; Temporarily replaced with ATM1 ATM2 ATM3 in missing-macros.asm
+; Will uncomment when \# is supported in lwtools 4.20
+;ATM     MACR
+;        FCB     \#
+;        FDB     \1
+;   IFGT \#-1
+;        FDB     \2
+;   ENDC
+;   IFGT \#-2
+;        FDB     \3
+;   ENDC
+;        ENDM
 ;
 AUTTAB  EQU     *
         ATM1    M$EXAM

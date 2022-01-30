@@ -72,7 +72,7 @@ DIRXXX  MACR
         \1      BACKWARD,BAK,0
         \1      AROUND,AROU,0
         \1      UP,UP,0
-        \1      DOWN,DN.0
+        \1      DOWN,DN,0
         ENDM
 
 
@@ -89,14 +89,6 @@ DIRXXX  MACR
 *       5) Object Weight
 *
 
-;Look-down drawing method symbols referenced in macros but definitions removed
-;before ROM went to Radio Shack for production.
-DFLASK  EQU     0
-DRING   EQU     0
-DSCROL  EQU     0
-DSHIEL  EQU     0
-DSWORD  EQU     0
-DTORCH  EQU     0
 
 GENXXX  MACR
         \1      FLASK,FLA0,K.FLAS,FFLASK,DFLASK,5
@@ -112,10 +104,7 @@ GENXXX  MACR
 *
 *  OBJXXX: Object Definition Macro
 *
-*  2022 update: to work around LWTools missing NARG, argument count is
-*               being added to the head of these value lists.
 *  Arguments:
-*      -1) (2022 Addition) Argument Count
 *       0) Object Name
 *       1) 4-letter Abbreviation
 *       2) Generic Class
@@ -135,40 +124,46 @@ LVL3    EQU     3
 LVL4    EQU     4
 LVL5    EQU     5
 ;*
+; 2022 Edit:
+;
+; Modified this macro again to use \1 for 8-argument lists and \2 for 11-argument.
+; Must be called with two macros, one which accepts 8-argument lists and one for 11.
+; Also defined macro NOCALL in missing-macros.asm which does nothing, so 8 arg lines
+; can be skipped for 11-arg-only macros.  Will change when \# is supported in lwtools 4.20
 OBJXXX  MACR
 *
 *  Level-4 Objects
 *
-        \1      11,SUPREME,RN05,K.RING,255,0,5,LVL4,1,3,T.RN15,0
+        \2      SUPREME,RN05,K.RING,255,0,5,LVL4,1,3,T.RN15,0
 *
 *  Level-3 Objects
 *
-        \1      11,JOULE,RN01,K.RING,170,0,5,LVL3,1,3,T.RN11,0
-        \1      8,ELVISH,SWO1,K.SWOR,150,64,64,LVL3,1
-        \1      11,MITHRIL,SHI1,K.SHIE,140,13,26,LVL3,2,64,64,0
+        \2      JOULE,RN01,K.RING,170,0,5,LVL3,1,3,T.RN11,0
+        \1      ELVISH,SWO1,K.SWOR,150,64,64,LVL3,1
+        \2      MITHRIL,SHI1,K.SHIE,140,13,26,LVL3,2,64,64,0
 *
 *  Level-2 Objects
 *
-        \1      8,SEER,SCR1,K.SCRO,130,0,5,LVL2,3
-        \1      8,THEWS,FLA1,K.FLAS,70,0,5,LVL2,3
+        \1      SEER,SCR1,K.SCRO,130,0,5,LVL2,3
+        \1      THEWS,FLA1,K.FLAS,70,0,5,LVL2,3
 *
 *  Level-1 Objects
 *
-        \1      11,HOTH,RN03,K.RING,52,0,5,LVL1,1,3,T.RN13,0
-        \1      8,VISION,SCR2,K.SCRO,50,0,5,LVL1,3
-        \1      8,ABYE,FLA3,K.FLAS,48,0,5,LVL1,6
-        \1      8,HALE,FLA2,K.FLAS,40,0,5,LVL1,4
-        \1      11,SOLAR,TOR1,K.TORC,70,0,5,LVL1,4,60,13,11
-        \1      11,BRONZE,SHI3,K.SHIE,25,0,26,LVL1,6,96,128,0
+        \2      HOTH,RN03,K.RING,52,0,5,LVL1,1,3,T.RN13,0
+        \1      VISION,SCR2,K.SCRO,50,0,5,LVL1,3
+        \1      ABYE,FLA3,K.FLAS,48,0,5,LVL1,6
+        \1      HALE,FLA2,K.FLAS,40,0,5,LVL1,4
+        \2      SOLAR,TOR1,K.TORC,70,0,5,LVL1,4,60,13,11
+        \2      BRONZE,SHI3,K.SHIE,25,0,26,LVL1,6,96,128,0
 *
 *  Level-0 Objects
 *
-        \1      11,VULCAN,RN02,K.RING,13,0,5,LVL0,1,3,T.RN12,0
-        \1      8,IRON,SW02,K.SWOR,13,0,40,LVL0,4
-        \1      11,LUNAR,TOR2,K.TORC,25,0,5,LVL0,8,30,10,4
-        \1      11,PINE,TOR4,K.TORC,5,0,5,LVL0,8,15,7,0
-        \1      11,LEATHER,SHI4,K.SHIE,5,0,10,LVL0,3,108,128,0
-        \1      8,WOODEN,SWO3,K.SWOR,5,0,16,LVL0,4
+        \2      VULCAN,RN02,K.RING,13,0,5,LVL0,1,3,T.RN12,0
+        \1      IRON,SW02,K.SWOR,13,0,40,LVL0,4
+        \2      LUNAR,TOR2,K.TORC,25,0,5,LVL0,8,30,10,4
+        \2      PINE,TOR4,K.TORC,5,0,5,LVL0,8,15,7,0
+        \2      LEATHER,SHI4,K.SHIE,5,0,10,LVL0,3,108,128,0
+        \1      WOODEN,SWO3,K.SWOR,5,0,16,LVL0,4
 *
         ENDM
 
@@ -180,7 +175,6 @@ OBJXXX  MACR
 *  2022 update: to work around LWTools missing NARG, argument count is
 *               being added to the head of these value lists.
 *  Arguments:
-*      -1) (2022 Addition) Argument Count
 *       0) Object Name
 *       1) 4-letter Abbreviation
 *       2) Generic Class
@@ -189,13 +183,13 @@ OBJXXX  MACR
 *       5) Physical Offense
 *
 SPCXXX  MACR
-        \1      6,FINAL,RN15,K.RING,0,0,0
-        \1      6,ENERGY,RN11,K.RING,0,255,255
-        \1      6,ICE,RN13,K.RING,0,255,255
-        \1      6,FIRE,RN12,K.RING,0,255,255
-        \1      6,GOLD,RN20,K.RING,0,0,5
-        \1      6,EMPTY,FLA4,K.FLAS,0,0,5
-        \1      11,DEAD,TOR5,K.TORC,5,0,5,0,0,0,0,0
+        \1      FINAL,RN15,K.RING,0,0,0
+        \1      ENERGY,RN11,K.RING,0,255,255
+        \1      ICE,RN13,K.RING,0,255,255
+        \1      FIRE,RN12,K.RING,0,255,255
+        \1      GOLD,RN20,K.RING,0,0,5
+        \1      EMPTY,FLA4,K.FLAS,0,0,5
+        \2      DEAD,TOR5,K.TORC,5,0,5,0,0,0,0,0
         ENDM
 
 
@@ -275,13 +269,13 @@ OBJWGT  EQU     *
 *  ODBTAB: Object Definition Blocks
 *
 ODB     MACR
-        FCB     \4,\5
-        FCB     \6,\7
+        FCB     \3,\4
+        FCB     \5,\6
         ENDM
 *
 ODBTAB  EQU     *
-        OBJXXX  ODB
-        SPCXXX  ODB
+        OBJXXX  ODB,ODB
+        SPCXXX  ODB,ODB
 
 
 
@@ -299,17 +293,15 @@ ODBTAB  EQU     *
 *       .OCXXX+2 ==> unused
 *
 XXX     MACR
-   IFGT (\1-8)
-        FCB     T.{3}
+        FCB     T.{2}
+        FCB     {9}
         FCB     {10}
         FCB     {11}
-        FCB     {12}
-   ENDC
         ENDM
 *
 XXXTAB  EQU     *
-        OBJXXX  XXX
-        SPCXXX  XXX
+        OBJXXX  NOCALL,XXX
+        SPCXXX  NOCALL,XXX
 ;
         FCB     -1              ;table terminator
 
@@ -327,14 +319,11 @@ XXXTAB  EQU     *
 ;        FCB     LH!+RH
 ;        ENDM
 OMX     MACR
-LH1     SET     \8 AND $0F
-LH2     SET     LH1*16
-RH      SET     \9 AND $0F
-        FCB     LH2+RH
+        FCB     ((\7&$0F)*16)+(\8&$0F)
         ENDM
 *
 OMXTAB  EQU     *
-        OBJXXX  OMX
+        OBJXXX  OMX,OMX
 OMXEND  EQU     *
 
 
