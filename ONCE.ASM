@@ -5,7 +5,7 @@
 ;
 ;  ONCE: Once-only Initialization
 ;
-        ORG     $C000
+        ORG     $4000
 ONCE    EQU     *               ;in the beginning...
 ;
 ;  DEMO/GAME Start-Up

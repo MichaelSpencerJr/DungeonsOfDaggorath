@@ -137,4 +137,4 @@
 ;
 ;   End of program
 ;
-;;;;;        END				
+                end             ONCE
