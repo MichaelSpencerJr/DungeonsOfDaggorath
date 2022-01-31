@@ -224,7 +224,7 @@ CGEN10  ADDA    B,X             ;figure number of creatures on level
         ADDA    #2              ;(2-9)
         INC     A,X             ;allow an extra creature of this type
 ;
-CGEN99  LDD     #(5*256)+Q.MIN  ;re-sched every 5 minutes
+CGEN99  SCHED$  5,Q.MIN         ;re-sched every 5 minutes
         RTS
 ;
 ;

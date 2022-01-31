@@ -42,9 +42,7 @@ BURN20  CMPA    P.OCXXX+2,U     ;adjust magic light?
         STA     P.OCXXX+2,U     ;adjust magic light
 BURN99  DEC     NEWLUK          ;request delayed screen update
 ;
-;        SCHED$  1,Q.MIN         ;once per minute
-;
-        LDD     #(1*256)+Q.MIN  ;once per minute
+        SCHED$  1,Q.MIN         ;once per minute
         RTS
 
 
@@ -62,7 +60,7 @@ LUKNEW  TST     NEWLUK          ;did a creature request an update?
 LNEW10  CLR     NEWLUK          ;reset flag
         SWI                     ;update the screen
         FCB     PUPDAT          ;   .
-LNEW99  LDD     #(3*256)+Q.TEN  ;twice per second
+LNEW99  SCHED$  3,Q.TEN         ;twice per second
         RTS
 
 
