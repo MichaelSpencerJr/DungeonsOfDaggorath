@@ -9,35 +9,6 @@
 ;        XDEF    FSCROL,FSWORD,FTORCH
 ;        OPT     NOMEX,NOGEN
 ;        DSCT
-; --- Michael Spencer's attempt at reconstructing original macros
-SVORG   MACR
-SVX     SET     \1
-SVY     SET     \2
-        FCB     \1,\2,V$REL
-        ENDM
-
-SVECT   MACR
-LH1     SET     \1-SVX
-LH2     SET     LH1/2
-LH3     SET     LH2&$000F
-LH4     SET     LH3*16
-RH1     SET     \2-SVY
-RH2     SET     RH1/2
-RH3     SET     RH2&$000F
-        FCB     LH4+RH3
-SVX     SET     \1
-SVY     SET     \2
-        ENDM
-        
-SVEND   MACR
-        FCB     V$ABS,V$END
-        ENDM
-        
-SVNEW   MACR
-        FCB     V$ABS
-        ENDM
-; ----
-
 ;
 ; Looking Forward - Shield
 ;
