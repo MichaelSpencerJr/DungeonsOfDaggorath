@@ -5,7 +5,7 @@
 ;
 ;  ONCE: Once-only Initialization
 ;
-        ORG     $4000
+        ORG     PROGLOAD
 ONCE    EQU     *               ;in the beginning...
 ;
 ;  DEMO/GAME Start-Up
@@ -50,13 +50,13 @@ COMINI  EQU     *               ;--- start of procedure COMINI
 ;
 ;  Zero All Of RAM
 ;
-        LDX     #$0200          ;clear all of our RAM
+        LDX     #DP.BEG         ;clear all of our RAM
 CINI10  CLR     ,X+             ;zero next location
-        CMPX    #$4000          ;done yet?
+        CMPX    #TOPRAM         ;done yet?
         BLO     CINI10          ;   nope
 ;
         STU     ,--S            ;stack return addr
-        LDA     #2              ;org the DP @ $0200
+        LDA     #VARSTART/256              ;org the DP @ $0200
         TFR     A,DP            ;   .
 ;
 ;  Initialize RAM Locations

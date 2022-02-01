@@ -77,21 +77,26 @@ I.LHL   EQU     $22             ;large heart (left)
 I.LHR   EQU     $23             ;large heart (right)
 I.BS    EQU     $24             ;<BS> backspace
 ;
+;  Main Entry Point and Direct-Page Locations
+;
+PROGLOAD        equ             $0E00
+VARSTART        equ             $4200        
+;
 ;  Display Area RAM Definitions
 ;
-G6.LEN  EQU     6144            ;length of Graphics-6 display buffers
+G6.LEN  EQU     $1800           ;length of Graphics-6 display buffers
 ;
-D0$BAS  EQU     $1000           ;Resolution Graphics-6 Display #0
+D0$BAS  EQU     $5000           ;Resolution Graphics-6 Display #0
 D0.LEN  EQU     32*19*8         ;32 bytes * 19 lines * 8 scan lines
 D0$END  EQU     D0$BAS+D0.LEN   ;ending addr
-D0.SAM  EQU     $2046           ;magic SAM bits
+D0.SAM  EQU     (D0$BAS/64)|6   ;SAM register for screen 0, pmode 4
 ;
-D1$BAS  EQU     $2800           ;Resolution Graphics-6 display buffer
+D1$BAS  EQU     D0$BAS+G6.LEN   ;Resolution Graphics-6 display buffer
 D1.LEN  EQU     32*19*8         ;32 bytes * 19 lines * 8 scan lines
 D1$END  EQU     D1$BAS+D1.LEN   ;ending addr
-D1.SAM  EQU     $20A6           ;magic SAM bits!
+D1.SAM  EQU     (D1$BAS/64)|6   ;SAM register for screen 1, pmode 4
 
-
+TOPRAM  equ     D1$BAS+G6.LEN   ;start of RAM
 
 ;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ;  V E C T O R   L I S T   C O M M A N D S
@@ -320,10 +325,8 @@ OD.LEN  EQU     OFF+4           ;length of ODB
 ;  D I R E C T   P A G E   D E F I N I T I O N S
 ;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ;
-        ORG     $0200           ;where our DP resides
-		SETDP   $02             ;tell the assembler
-;
-;
+        ORG     VARSTART        ;where our DP resides
+        SETDP   VARSTART/256    ;tell the assembler
 DP.BEG  EQU     *               ;first location in DP
 ;
 ;  RAM Initialized by ONCE
@@ -629,7 +632,7 @@ MM.END  EQU     *               ;last location of memory
 ;
 ;  Stack Area
 ;
-PDL     EQU     $1000           ;where the push-down-list starts
-PD.LEN  EQU     $1000-MM.END    ;length of push-down list
+PDL     EQU     D0$BAS          ;where the push-down-list starts
+PD.LEN  EQU     D0$BAS-MM.END   ;length of push-down list
 ;
 ;;;;;        END
