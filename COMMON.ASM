@@ -125,7 +125,7 @@ LOAD12  LDA     ,X+             ;load next char
 ;
         SWI2                    ;re-synchronize
         FCB     CSRDON-$A000    ;   .
-        LDX     #VARSTART       ;start of restore area
+        LDX     #DP.BEG         ;start of restore area
 LOAD20  BSR     GETBUF          ;get the next buffer
         BPL     LOAD20          ;   not done yet
 ;
@@ -396,7 +396,7 @@ CLOCK   LDX     #PIA$1          ;load ptr to PIA #1
 ;
 ;  Insure Correct DP
 ;
-        LDA     #VARSTART/256   ;org the DP
+        LDA     #DP.BEG/256     ;org the DP
         TFR     A,DP            ;   .
 ;
 ;  Swap the Display Screens

@@ -80,7 +80,7 @@ I.BS    EQU     $24             ;<BS> backspace
 ;  Main Entry Point and Direct-Page Locations
 ;
 PROGLOAD        equ             $0E00
-VARSTART        equ             $4200        
+VARSTART        equ             $4100        
 ;
 ;  Display Area RAM Definitions
 ;
@@ -148,6 +148,14 @@ BLKIN   EQU     $A006
 BLKOUT  EQU     $A008
 JOYIN   EQU     $A00A
 WRTLDR  EQU     $A00C
+;
+; DISK BASIC constants
+;
+RSTFLG		equ $71
+DFLTYP		equ $957
+DASCFL		equ $958
+DEFDRV		equ $959
+DNAMBF		equ $94c
 ;
 ; PIA Definitions
 ;
@@ -325,8 +333,16 @@ OD.LEN  EQU     OFF+4           ;length of ODB
 ;  D I R E C T   P A G E   D E F I N I T I O N S
 ;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ;
-        ORG     VARSTART        ;where our DP resides
-        SETDP   VARSTART/256    ;tell the assembler
+        ORG     VARSTART
+
+hook_openi	rmb 2				; the address of the "open for input" routine in Disk ROM
+hook_openo	rmb 2				; the address of the "open for output" routine in the Disk ROM
+error_handler	rmb 2				; the installed error trap
+error_stack	rmb 2				; the stack address to use when transferring control to the error trap
+; These variables are additional ones used by extensions to the original ROM
+		rmb 256-(*&255)			; align the next bit on a page boundary
+; These are the original variables used by the system, including the direct page.
+
 DP.BEG  EQU     *               ;first location in DP
 ;
 ;  RAM Initialized by ONCE

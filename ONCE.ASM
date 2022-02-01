@@ -56,10 +56,12 @@ CINI10  CLR     ,X+             ;zero next location
         BLO     CINI10          ;   nope
 ;
         STU     ,--S            ;stack return addr
-        LDA     #VARSTART/256              ;org the DP @ $0200
+        LDA     #DP.BEG/256     ;org the DP
         TFR     A,DP            ;   .
 ;
 ;  Initialize RAM Locations
+;
+        SETDP   DP.BEG/256    ;tell the assembler where our DP resides
 ;
         LDY     #RAMDAT         ;RAM initialization start addr
 CINI20  LDA     ,Y+             ;load byte count

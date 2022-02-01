@@ -135,6 +135,7 @@
         INCLUDE D4.ASM           ;Creature Vector List (II)
         INCLUDE KSK.ASM          ;Good Use of leftover Bytes
         
+                INCLUDE         disk-io.asm
                 INCLUDE         autostart-loader.asm
 ;
 ;   End of program
