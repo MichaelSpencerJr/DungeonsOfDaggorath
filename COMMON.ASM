@@ -17,27 +17,6 @@
 ;
 ;       B - Queue Pointer or Zero (destroy the TCB)
 ;
-
-
-
-;
-;  GETBUF: Gets the next buffer from the cassette
-;
-;  Inputs:
-;       X - buffer addr
-;  Returns:
-;       A - zero if no errors
-;       B - block type
-;       X - buffer addr updated (if no errors)
-;       Z - condition code set if no errors
-;
-GETBUF  STX     >$007E          ;set the buffer addr
-        SWI2                    ;read the next block
-        FCB     BLKIN-$A000     ;   .
-        TSTA                    ;set condition codes
-        LBNE    $A027           ;   restart the world if error
-        LDB     >$007C          ;load the block type
-        RTS                     ;bye
 ;
 ;  PIETAP: Initialize PIA's for Tape Operations
 ;
@@ -57,82 +36,6 @@ TDLY10  LEAX    -1,X            ;   .
 
 
 
-;
-;  SAVE: Process the Game Save Function
-;
-SAVE    BSR     PIATAP          ;init PIA's for tape operations
-        BSR     TAPDLY          ;delay for a while
-        BSR     TAPDLY          ;   .
-;
-;  Write NAMEFILE Block
-;
-        SWI2                    ;write the leader
-        FCB     WRTLDR-$A000    ;   .
-        SWI2                    ;write the name file block
-        FCB     BLKOUT-$A000    ;   .
-;
-;  Write DATA Blocks
-;
-        BSR     TAPDLY          ;delay for a while
-        SWI2                    ;write second leader
-        FCB     WRTLDR-$A000    ;   .
-;
-        LDX     #DP.BEG         ;start of save area
-SAVE10  LDD     #$0180          ;128-byte DATA blocks
-        STD     >$007C          ;   .
-        STX     >$007E          ;buffer addr
-        SWI2                    ;write the next block
-        FCB     BLKOUT-$A000    ;   .
-        CMPX    #MM.END         ;done yet?
-        BLO     SAVE10          ;   nope
-;
-;  Write EOF Block
-;
-        STU     >$007C          ;end of file block ($FF00)
-        SWI2                    ;   .
-        FCB     BLKOUT-$A000    ;   .
-        BSR     TAPDLY          ;some blank tape
-        BRA     LOAD90          ;drop into common code
-
-
-
-;
-;  LOAD: Process Game Restore Function
-;
-LOAD    BSR     PIATAP          ;init PIA's for tape operations
-        SWI2                    ;get into bit sync
-        FCB     CSRDON-$A000    ;   .
-;
-;  Search For Correct File
-;
-LOAD10  LDU     FLOP            ;use alternate screen as buffer
-        LDX     P.VDBAS,U       ;   .
-        BSR     GETBUF          ;get the next bufferful
-        BNE     LOAD10          ;   not a file header
-;
-;  Compare filenames
-;
-        LDX     P.VDBAS,U       ;cassette buffer addr
-        LDU     #TOKEN          ;TOKEN buffer addr
-        LDB     #8              ;eight characters in filename
-LOAD12  LDA     ,X+             ;load next char
-        CMPA    ,U+             ;did we match
-        BNE     LOAD            ;   nope - get next cassette buffer
-        DECB                    ;one less to match
-        BNE     LOAD12          ;   until we have a complete match
-;
-;  We found our file...
-;
-        SWI2                    ;re-synchronize
-        FCB     CSRDON-$A000    ;   .
-        LDX     #DP.BEG         ;start of restore area
-LOAD20  BSR     GETBUF          ;get the next buffer
-        BPL     LOAD20          ;   not done yet
-;
-;  Restart the Game
-;
-        LDS     #PDL            ;reset the stack ptr
-;
 LOAD90  JSR     IRQSYN          ;enable/sync on IRQ
         CLR     ZFLAG           ;indicate tape operation complete
         SWI                     ;show what is going on
@@ -151,9 +54,9 @@ SCHED0  TFR     U,Y             ;curr TCB becomes prev TCB
 ;
 ;  Check for TAPE functions
 ;
-SCHED1  TST     ZFLAG           ;check for load/save (-1/1)
-        BGT     SAVE            ;   .
-        BMI     LOAD            ;   .
+SCHED1  ;TST     ZFLAG           ;check for load/save (-1/1)
+        ;BGT     SAVE            ;   .
+        ;BMI     LOAD            ;   .
 ;
 ;  Process next entry in SCDQUE
 ;
