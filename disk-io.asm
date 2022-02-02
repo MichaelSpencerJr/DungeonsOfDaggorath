@@ -153,8 +153,8 @@ save_game006	ldd PLHAND			; fetch object in left hand
 		jsr save_writeobj		; write object identifier
 		ldd OCBPTR			; get object table
 		jsr save_writeobj		; write object identifier
-		ldy #OCBLND-14	        	; point to object table
-save_game007	leay 14,y			; move to next object
+		ldy #OCBLND-OC.LEN		; point to object table
+save_game007	leay OC.LEN,y			; move to next object
 		cmpy OCBPTR			; are we at the  end of the object table?
 		bhs save_game008		; brif so
 		ldd ,y				; get "next object" pointer
@@ -163,9 +163,9 @@ save_game007	leay 14,y			; move to next object
 		leax 2,y			; point to rest of object data
 		bsr file_writen			; write that data out
 		bra save_game007		; go handle another object
-save_game008	ldy #CMXEND-17	        	; point to creature table
-save_game009	leay 17,y			; move to next creature entry
-		cmpy #CMXEND+(17*32)	        ; at the end of the creature table?
+save_game008	ldy #CCBLND-CC.LEN		; point to creature table
+save_game009	leay CC.LEN,y			; move to next creature entry
+		cmpy #CCBLND+(CC.LEN*32)	; at the end of the creature table?
 		bhs save_game010		; brif so
 		leax ,y				; point to start of creature data
 		ldb #8				; first 8 bytes need no adjusting
@@ -176,10 +176,10 @@ save_game009	leay 17,y			; move to next creature entry
 		ldb #7				; there are 7 more bytes
 		bsr file_writen			; save the remainder
 		bra save_game009		; go handle another creature
-save_game010	ldx #NULQUE			; point to scheduling lists
+save_game010	ldx #QUEBEG			; point to scheduling lists
 save_game011	ldd ,x++			; fetch list head
 		bsr save_writesched		; write a scheduling pointer
-		cmpx #NULQUE+14	        	; done all lists?
+		cmpx #QUEEND	        	; done all lists?
 		blo save_game011		; brif not
 		ldd TCBPTR	        	; get top of scheduling table
 		bsr save_writesched		; write it too
@@ -337,7 +337,7 @@ load_game009	leay CC.LEN,y			; move to next creature entry
 		lbcs load_gameerr		; brif read error
 		bra load_game009		; go handle another creature
 load_game010	ldx #QUEBEG			; point to scheduling lists
-load_game011	bsr load_readsched		; read a scheduling pointer
+load_game011	jsr load_readsched		; read a scheduling pointer
 		std ,x++			; set scheduling list
 		cmpx #QUEEND	        	; done all lists?
 		blo load_game011		; brif not
@@ -372,11 +372,16 @@ load_game017	ldx #MAZLND			; point to map data
 load_game018	bsr load_read			; read a byte
 		lbcs load_gameerr		; brif error reading
 		sta ,x+				; save maze data
-		cmpx #MAZLND+1024		; end of map?
+		cmpx #MAZEND    		; end of map?
 		blo load_game018		; brif not
 		jsr file_close			; close the disk file
 		lbne load_gameerr		; brif error closing (writing buffer failed)
 		jsr NLVL50			; set up backgrounds correctly
+		lda LEVEL	        	; get current level
+		ldb #CTYPES			; number of entries in creature count table
+		mul				; calculate offset to creature counts for this level
+		addd #CMXLND    		; point to correct creature count table for this level
+		std CMXPTR      		; save pointer to creature count table for the correct level
 		ldx #VFTTAB			; point to hole/ladder table
 		ldb LEVEL	        	; fetch current level
 load_game019	stx VFTPTR			; save hole/ladder data pointer
