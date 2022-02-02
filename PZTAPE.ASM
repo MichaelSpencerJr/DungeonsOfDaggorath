@@ -17,9 +17,10 @@ FILNAM  LDX     #TOKEN          ;initialize TOKEN buffer
 ;  PZSAVE: Game Restore Function
 ;
 PZSAVE  BSR     FILNAM          ;get the file name
-        STX     >$007E          ;set buffer addr
-        LDD     #$000F          ;BLKTYP,,BLKLEN  (0=namefile,,15=length)
-        STD     >$007C          ;   .
+;;;        STX     >$007E          ;set buffer addr
+;;;        LDD     #$000F          ;BLKTYP,,BLKLEN  (0=namefile,,15=length)
+;;;        STD     >$007C          ;   .
+                ldu             #TOKEN
 ;
 ;  Set up NAMEFILE Block:
 ;       Bytes   Description
@@ -35,6 +36,9 @@ PZSAVE  BSR     FILNAM          ;get the file name
 ;       CLR     9,X             ;ASCII flag = Binary
 ;
         INC     ZFLAG           ;flag for save
+                jsr             save_game
+                dec             ZFLAG
+                lbcs            CMDERR
         RTS                     ;bye
 ;
 ;;;;;        END

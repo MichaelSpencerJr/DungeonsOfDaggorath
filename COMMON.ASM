@@ -399,6 +399,11 @@ CLOCK   LDX     #PIA$1          ;load ptr to PIA #1
         LDA     #DP.BEG/256     ;org the DP
         TFR     A,DP            ;   .
 ;
+;  Test if loading/saving and skip processing interrupt if so
+;
+                tst             ZFLAG           ; are we loading/saving?
+                lbne            CLK90           ; brif so - don't process interrupt
+;
 ;  Swap the Display Screens
 ;
         TST     UPDATE          ;do we need to update the screen?
