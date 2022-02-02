@@ -349,7 +349,7 @@ load_game012	leay TC.LEN,y			; move to next entry
 		bhs load_game017		; brif so
 		bsr load_readsched		; read scheduling pointer
 		std ,y				; set pointer to next entry
-		bsr load_read			; read tick count value
+		jsr load_read			; read tick count value
 		lbcs load_gameerr		; brif read error
 		sta 2,y				; save ticks count
 		bsr load_readw			; read a word from file
@@ -377,6 +377,13 @@ load_game018	bsr load_read			; read a byte
 		jsr file_close			; close the disk file
 		lbne load_gameerr		; brif error closing (writing buffer failed)
 		jsr NLVL50			; set up backgrounds correctly
+		ldx #VFTTAB			; point to hole/ladder table
+		ldb LEVEL	        	; fetch current level
+load_game019	stx VFTPTR			; save hole/ladder data pointer
+load_game020	lda ,x+				; fetch flag
+		bpl load_game020		; brif we didn't consume a flag
+		decb				; are we at the right set of data for the level?
+		bpl load_game019		; brif not - save new pointer and search again
 		clra				; clear carry for success
 		puls d,x,y,u,pc			; restore registers and return
 load_readsched	ldd #TCBLND			; set the bias for the read
