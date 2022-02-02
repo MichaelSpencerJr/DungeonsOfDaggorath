@@ -40,10 +40,14 @@ NLVL12  LDA     ,X+             ;search for negative
 ;  Give this new world LIFE...
 ;
         LDU     CMXPTR          ;load CMXLND index
+		ldb #32				; maximum number of creatures to make
+		pshs b				; save for later
         LDA     #CTYPES-1       ;start with most ferocious creatures
 NLVL30  LDB     A,U             ;number of this type of creature
         BEQ     NLVL34          ;   done
 NLVL32  JSR     CBIRTH          ;give birth to a creature
+		dec ,s				; created maximum number of creatures?
+		beq NLVL36			; brif max created
         DECB                    ;one less creature to create
         BNE     NLVL32          ;   until we are done
 NLVL34  DECA                    ;advance to next creature type
@@ -54,6 +58,7 @@ NLVL34  DECA                    ;advance to next creature type
 ;
 ;  Randomly Attach Creature-Owned Objects
 ;
+NLVL36		leas 1,s			; clean up stack
         LDU     #CCBLND-CC.LEN  ;land of creatures
         CLR     OFINDF          ;start at top of object list
 NLVL40  JSR     FNDOBJ          ;find the next object on our level
