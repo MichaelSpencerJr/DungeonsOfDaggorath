@@ -5,9 +5,32 @@
 ;  PZLOAD: Game Restore Function
 ;
 PZLOAD  BSR     FILNAM          ;get the file name
-        DEC     ZFLAG           ;flag for load
-        RTS                     ;bye
+;;;        DEC     ZFLAG           ;flag for load
+;;;        RTS                     ;bye
 ;
+		ldu #TOKEN			; point to the file name
+		inc ZFLAG       		; freeze interrupts during load
+		jsr load_game			; load the game
+		bcs cmd_zload000		; brif loading failed - we can only reset in that case
+		lds #PDL			; reset the stack
+		ldx #LINBUF			; reset buffer pointer to start of line
+		stx LINPTR			; save new buffer pointer
+		ldx #KBDBUF			; empty keyboard buffer
+		stx KBDHDR
+		stx KBDTAL
+		SWI		        ; force an update of the dungeon
+                FCB             PUPDAT
+		sync				; wait for screen swap
+		dec ZFLAG       		; unfreeze interrupts
+		SWI     			; reset the display
+                FCB             INIVU
+		SWI			; show the prompt
+                FCB             PROMPT
+		jmp SCHED			; go back into the main loop
+cmd_zload000	tstb				; recoverable error?
+		lbne ONCE			; brif not - do a cold start
+		dec ZFLAG       		; unfreeze interrupts
+		jmp CMDERR			; show the ??? thing
 FILNAM  LDX     #TOKEN          ;initialize TOKEN buffer
         LEAU    32,X            ;negative ones
         SWI                     ;   .

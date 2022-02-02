@@ -3,7 +3,7 @@
 ; both versions of Disk Basic, even though it is hooked by them it does nothing (just RTS). By setting the execution address
 ; also to LOADER, it means that even if, for some reason, control doesn't transfer here, EXEC will still do so.
 LOADER		clr $FF40			; turn off drive motors
-		lda #$7f			; opcode for JMP extended
+		lda #$7e			; opcode for JMP extended
 		ldx #error_hook			; point to the error handler
 		sta $191			; set up handler for the error routine at AC46
 		stx $192

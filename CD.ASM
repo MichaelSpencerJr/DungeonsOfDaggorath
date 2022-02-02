@@ -151,11 +151,19 @@ WRTLDR  EQU     $A00C
 ;
 ; DISK BASIC constants
 ;
+ROMTAB		equ $A000
+;
+BLKTYP		equ $7c
+BLKLEN		equ $7d
+CBUFAD		equ $7e
+CINBFL		equ $70
 RSTFLG		equ $71
 DFLTYP		equ $957
 DASCFL		equ $958
-DEFDRV		equ $959
+DEFDRV		equ $95A
 DNAMBF		equ $94c
+;
+RESVEC		equ $A027
 ;
 ; PIA Definitions
 ;

@@ -107,9 +107,10 @@ file_read	pshs d,x,y,u			; save registers
 		jsr error_settrap		; set error handler
 		bsr set_basdp			; set up DP correctly
 		jsr $A176			; go read a character
+		sta ,s				; save return value
 		bsr restore_dp			; reset DP
 		clrb				; reset C for no error
-		puls b,x,pc			; restore registers and return
+		puls d,x,y,u,pc			; restore registers and return
 ; This is the IO error handler for file I/O
 file_ioerror	bsr restore_dp			; reset DP properly
 		bsr file_close			; close the file
@@ -119,29 +120,11 @@ file_ioerror	bsr restore_dp			; reset DP properly
 ; Save a game to disk. This is different to the tape save scheme in the original ROM. Instead of simply doing a raw dump
 ; of the game state, this routine uses a more structured approach and only saves what is required.
 ;
-; The initial process is to freeze the game (by stopping the IRQ). Then it saves the various variables as required according to
-; the specified list. Once those are done, the more complex structures are saved with adjustments as required.
-;
 ; Enter with the file name at U. The game will be saved to the default drive as understood by Disk Basic.
 ;
 ; Exit with C clear if no error and C set if error.
 save_game	pshs d,x,y,u			; save registers
-		ldb #8				; copy 8 bytes for the file name
-		ldx #DNAMBF			; point to file name buffer
-save_game000	lda ,u+				; get character from file name
-		bmi save_game001		; brif end of name
-		adda #$40			; restore to upper case ASCII
-		sta ,x+				; save filename character
-		decb				; max name size?
-		bne save_game000		; brif not
-		bra save_game003		; get on with saving
-save_game001	lda #32				; code for space
-save_game002	sta ,x+				; put a space in the file name
-		decb				; end of file name?
-		bne save_game002		; brif not
-save_game003	ldd #'D*256+'O			; set extension to "DOD"
-		std ,x++
-		sta ,x
+		jsr loadsave_setfn		; set up file name
 		ldd #$0100			; set to "binary data" format
 		jsr file_openo			; open file for output
 		beq save_game004		; brif no error opening file
@@ -200,8 +183,8 @@ save_game011	ldd ,x++			; fetch list head
 		blo save_game011		; brif not
 		ldd TCBPTR	        	; get top of scheduling table
 		bsr save_writesched		; write it too
-		ldy #TCBLND-7			; point to start of scheduling table
-save_game012	leay 7,y			; move to next entry
+		ldy #TCBLND-TC.LEN		; point to start of scheduling table
+save_game012	leay TC.LEN,y			; move to next entry
 		cmpy TCBPTR	        	; end of table?
 		bhs save_game017		; brif so
 		ldd ,y				; get pointer to next entry
@@ -226,7 +209,7 @@ save_game017	ldx #MAZLND			; point to map data
 save_game018	lda ,x+				; fetch byte
 		jsr file_write			; send to file
 		lbcs save_gameerr		; brif write failed
-		cmpx #MAZLND+1024		; end of map?
+		cmpx #MAZEND    		; end of map?
 		blo save_game018		; brif not
 		jsr file_close			; close the disk file
 		lbne save_gameerr		; brif error closing (writing buffer failed)
@@ -247,6 +230,182 @@ file_writew	jsr file_write			; write the first byte
 		tfr b,a				; get second byte
 		jsr file_write			; write it
 file_writew000	rts				; return to caller
+loadsave_setfn	ldb #8				; 8 characters max for file name
+		ldx #DNAMBF			; point to file name location
+loadsave_setfn0	lda ,u+				; fetch character from file name
+		bmi loadsave_setfn1		; brif end of specified name
+		adda #$40			; adjust back to ASCII range
+		sta ,x+				; put character in buffer
+		decb				; have we reached the end of the buffer?
+		bne loadsave_setfn0		; brif not
+		bra loadsave_setfn3		; go set extension
+loadsave_setfn1	lda #32				; set up to fill remainder with spaces
+loadsave_setfn2	sta ,x+				; put a space
+		decb				; buffer full yet?
+		bne loadsave_setfn2		; brif not
+loadsave_setfn3	ldd #'D*256+'O			; set up to place extension
+		std ,x++			; set first two characters of the extension
+		sta ,x				; set last character of the extension
+		rts				; return to caller
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Load a game from disk, in the same format as save_game above.
+;
+; Enter with the file name at U. The game will be saved to the default drive as understood by Disk Basic.
+;
+; Exit with C clear if no error and C set if error.
+load_game	clrb				; mark current game still valid
+		pshs d,x,y,u			; save registers
+		bsr loadsave_setfn		; set up the file name correctly
+		jsr file_openi			; open file for output
+		beq load_game004		; brif no error opening file
+		bra load_gameerrx		; throw error if open failed
+load_gameerr	jsr file_close			; close the file if it's open
+load_gameerrx	coma				; flag error on save
+		puls d,x,y,u,pc			; return to caller
+file_readn	jsr file_read			; read byte
+		bcs file_readn001		; brif error
+		tst CINBFL			; was there anything to read?
+		bne file_readn000		; brif not
+		sta ,x+				; save byte in buffer
+		decb				; done reading?
+		bne file_readn			; brif not
+		rts				; return success
+file_readn000	coma				; set carry for failed read
+file_readn001	rts				; return failure
+load_game004	ldu #save_vartab		; point to static variable list
+		ldb ,u				; get number of bytes in magic number
+		negb				; make a hole on the stack
+		leas b,s
+		leax ,s				; point to hole on stack
+		ldb ,u				; get length back
+		bsr file_readn			; read the magic number
+		bcs load_gameerr		; brif error
+		ldb ,u+				; get the actual number of bytes again
+		ldy ,u++			; point to actual magic number
+		leax ,s				; point back to read buffer
+load_game004a	lda ,x+				; get character read
+		cmpa ,y+			; does it match?
+		beq load_game004b		; brif not - not a valid save game
+		ldb -3,u			; get size of string
+		leas b,s			; clean up stack
+		bra load_gameerr		; go propagate error
+load_game004b	decb				; compared all?
+		bne load_game004a		; brif not
+		ldb -3,u			; get back length
+		leas b,s			; restore stack
+		inc 1,s				; mark game no longer recoverable
+load_game005	ldb ,u+				; get number of bytes to save
+		beq load_game006		; brif end of table
+		ldx ,u++			; get address of variables
+		bsr file_readn			; read bytes from file
+		bcs load_gameerr		; brif error writing
+		bra load_game005		; go handle another entry
+load_game006	jsr load_readobj		; read an object pointer
+		std PLHAND			; set left hand object
+		jsr load_readobj		; read an object pointer
+		std PRHAND			; set right hand object
+		jsr load_readobj		; read an object pointer
+		std PTORCH			; set the current torch
+		jsr load_readobj		; read an object pointer
+		std BAGPTR			; set first item in backpack
+		jsr load_readobj		; read object pointer
+		std OCBPTR			; set top of object table
+		ldy #OCBLND-14		; point to object table
+load_game007	leay 14,y			; move to next object
+		cmpy OCBPTR			; are we at the end of the object table?
+		bhs load_game008		; brif so
+		jsr load_readobj		; read object pointer
+		std ,y				; save "next object" pointer
+		ldb #12				; 12 bytes remaining in object data
+		leax 2,y			; point to rest of object data
+		bsr file_readn			; read rest of object data
+		lbcs load_gameerr		; brif read error
+		bra load_game007		; go handle another object
+load_game008	ldy #CCBLND-CC.LEN		; point to creature table
+load_game009	leay CC.LEN,y			; move to next creature entry
+		cmpy #CCBLND+(CC.LEN*32)	; at the end of the creature table?
+		bhs load_game010		; brif so
+		leax ,y				; point to start of creature data
+		ldb #8				; first 8 bytes need no adjusting
+		jsr file_readn			; save first 8 bytes
+		lbcs load_gameerr		; brif read error
+		jsr load_readobj		; read object pointer
+		std 8,y				; save creature inventory pointer
+		leax 10,y			; point to remainder of object data
+		ldb #7				; there are 7 more bytes
+		jsr file_readn			; load the remainder
+		lbcs load_gameerr		; brif read error
+		bra load_game009		; go handle another creature
+load_game010	ldx #QUEBEG			; point to scheduling lists
+load_game011	bsr load_readsched		; read a scheduling pointer
+		std ,x++			; set scheduling list
+		cmpx #QUEEND	        	; done all lists?
+		blo load_game011		; brif not
+		bsr load_readsched		; read scheduling pointer
+		std TCBPTR	        	; set top of scheduling table
+		ldy #TCBLND-TC.LEN			; point to start of scheduling table
+load_game012	leay TC.LEN,y			; move to next entry
+		cmpy TCBPTR     		; end of table?
+		bhs load_game017		; brif so
+		bsr load_readsched		; read scheduling pointer
+		std ,y				; set pointer to next entry
+		bsr load_read			; read tick count value
+		lbcs load_gameerr		; brif read error
+		sta 2,y				; save ticks count
+		bsr load_readw			; read a word from file
+		lbcs load_gameerr		; brif error
+		ldu #save_schedtab		; point to handler fixups
+load_game013	cmpd 2,u			; does the handler pointer match?
+		beq load_game014		; brif so
+		leau 6,u			; move to next entry
+		cmpu #save_schedtabe		; end of table?
+		lbhs load_gameerr		; brif not found - corrupted file
+		bra load_game013		; go see if it matches now
+load_game014	ldd ,u				; fetch actual routine address
+		std 3,y				; save it in the scheduling entry
+		bsr load_readw			; read the private data
+		lbcs load_gameerr		; brif error reading data
+		addd 4,u			; add in private data bias
+		std 5,y				; save in scheduler entry
+		bra load_game012		; go save the next scheduling entry
+load_game017	ldx #MAZLND			; point to map data
+load_game018	bsr load_read			; read a byte
+		lbcs load_gameerr		; brif error reading
+		sta ,x+				; save maze data
+		cmpx #MAZLND+1024		; end of map?
+		blo load_game018		; brif not
+		jsr file_close			; close the disk file
+		lbne load_gameerr		; brif error closing (writing buffer failed)
+		clra				; clear carry for success
+		puls d,x,y,u,pc			; restore registers and return
+load_readsched	ldd #TCBLND			; set the bias for the read
+		bra load_readsched0		; go read the adjusted word
+load_readobj	ldd #OCBLND			; set the bias for the read
+load_readsched0	pshs d				; save bias
+		bsr load_readw			; read a word from the file
+		bcs load_gameerr0		; brif error reading
+		cmpd #$ffff			; is it a NULL?
+		bne load_readobj1		; brif not
+		clra				; set result to NULL
+		clrb
+		leas 2,s			; remove bias
+		rts				; return result to caller
+load_readobj1	addd ,s++			; add the bias in
+		rts				; return result to caller
+load_gameerr0	leas 4,s			; lose caller and saved bias
+		jmp load_gameerr		; go return the error
+load_readw	bsr load_read			; read the first byte
+		bcs load_readw000		; brif error
+		tfr a,b				; save first byte
+		bsr load_read			; read second byte
+		exg a,b				; put bytes in right order
+load_readw000	rts				; return to caller
+load_read	jsr file_read			; read a byte
+		bcs load_read000		; brif error
+		tst CINBFL			; was there something to read?
+		beq load_read000		; brif so
+		coma				; set carry for nothing to read
+load_read000	rts				; return to caller
 save_schedtab	fdb PLAYER			; keyboard processor
 		fdb 1				; type 1
 		fdb 0				; save remainder as is
@@ -264,6 +423,7 @@ save_schedtab	fdb PLAYER			; keyboard processor
 		fdb 0				; save remainder as is
 		fdb CMOVE			; creature movement hanlder
 		fdb CMXEND			; save as offset into creature table
+save_schedtabe	equ *				; end of table marker
 save_magic	fcc 'DoDL'			; magic number
 		fcb 1				; save game version
 ; This is the table of variables to save "as is". Each entry is an 8 bit length followed by a 16 bit address. A length of 0
