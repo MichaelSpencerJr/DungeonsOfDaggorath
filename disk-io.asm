@@ -376,6 +376,7 @@ load_game018	bsr load_read			; read a byte
 		blo load_game018		; brif not
 		jsr file_close			; close the disk file
 		lbne load_gameerr		; brif error closing (writing buffer failed)
+		jsr NLVL50			; set up backgrounds correctly
 		clra				; clear carry for success
 		puls d,x,y,u,pc			; restore registers and return
 load_readsched	ldd #TCBLND			; set the bias for the read
