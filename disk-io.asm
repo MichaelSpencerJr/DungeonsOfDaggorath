@@ -84,3 +84,37 @@ restore_dp	pshs cc,a			; save flags and temp
 		lda #DP.BEG/256			; get proper DP value
 		tfr a,dp			; set DP
 		puls cc,a,pc			; restore registers and return
+; This routine closes the currently open file. It returns Z set on success and clear on error.
+; Enter with the file number in DEVNUM.
+file_close	ldx #file_openerr		; use the same generic handler for failure as opening
+		bsr error_settrap		; register error handler
+		bsr set_basdp			; set up DP correctly
+		jsr $A426			; call the "close one file" handler
+		clra				; set Z for success
+		bra restore_dp			; restore DP and return
+; This routine writes the byte in A to the currently open file.
+; In the event of an error, return C set and close the file. Otherwise, return C clear.
+file_write	pshs b,x			; save registers
+		ldx #file_ioerror		; pointer to IO error trap
+		jsr error_settrap		; set the trap
+		bsr set_basdp			; set up DP properly
+		jsr $A282			; write byte
+		bsr restore_dp			; restore direct page
+		clrb				; reset C for no error
+		puls b,x,pc			; restore registers and return
+; This routine reads a byte from the currently open file and returns it in A.
+; In the event of an error, return C set and close the file. Otherwise, return C clear.
+; On EOF, CINBFL will be nonzero.
+file_read	pshs d,x,y,u			; save registers
+		ldx #file_ioerror		; pointer to IO error handler
+		jsr error_settrap		; set error handler
+		bsr set_basdp			; set up DP correctly
+		jsr $A176			; go read a character
+		bsr restore_dp			; reset DP
+		clrb				; reset C for no error
+		puls b,x,pc			; restore registers and return
+; This is the IO error handler for file I/O
+file_ioerror	bsr restore_dp			; reset DP properly
+		bsr file_close			; close the file
+		comb				; flag error
+		puls d,x,y,u,pc			; restore registers and return
