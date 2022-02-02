@@ -515,7 +515,10 @@ CLK60   SWI2                    ;scan the keyboard
         BSR     KBDPUT          ;deposit char in buffer
 ;
 CLK90   LDA     P.PIIOB+PIA$0   ;reset PIA for next interrupt
-        RTI                     ;dismiss the interrupt
+; Because we're using Basic routines, we need to let the Basic IRQ handler run too.
+		clra				; restore DP to 0 for Basic
+		tfr a,dp
+		jmp [hook_irq]			; transfer control to the saved IRQ routine (this will do the RTI)
 ;
 ;  ROLTAB: Rollover Values for Timers
 ROLTAB  FCB     6               ;jiffy
