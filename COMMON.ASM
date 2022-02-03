@@ -17,13 +17,6 @@
 ;
 ;       B - Queue Pointer or Zero (destroy the TCB)
 ;
-LC16D		stx CBUFAD			; set address to read to
-                swi2
-		fcb BLKIN			; read a block
-		tsta				; is it the end of the file?
-		lbne RESVEC			; brif so - premature end, fail with a reset
-		ldb BLKTYP			; get type of block
-		rts
 ;
 ;  PIATAP: Initialize PIA's for Tape Operations
 ;
