@@ -27,26 +27,26 @@ COMINI  EQU     *               ;--- start of procedure COMINI
         LDS     #PDL            ;set stack pointer
 ;  Program PIA$0
 ;
-        LDX     #PIA$0          ;PIA$0 addr
-        LDD     #$34FA          ;bit patterns
-        STA     P.PICRB,X       ;SEL2=0, Disable IRQ to CPU
-        STA     P.PICRA,X       ;SEL1=0, Disable IRQ to CPU
+		ldd #$34fc			; initializers for the PIA
+		sta PIA$0+P.PICRB		; set data mode, interrupts disabled (side B)
+		sta PIA$0+P.PICRA		; set data mode, interrupts disabled (side A)
 ;
 ;  Program PIA$1
 ;
-        LDX     #PIA$1          ;PIA$1 addr
-        STA     P.PICRA,X       ;Cassette Motor OFF, Disable FIRQ to CPU
-        CLR     P.PICRB,X       ;program inputs/outputs
-        STB     P.PIIOB,X       ;Outputs: VDG(b7-b3), 1-Bit Sound(b1)
-        LDA     #$3C            ;Six Bit Sounds ON, Disable FIRQ to CPU
-        STA     P.PICRB,X       ;   .
+		clr PIA$1+P.PICRA		; set PIA1 A to direction mode
+		stb PIA$1			; set sound to output, RS232 and cassette to input
+		sta PIA$1+P.PICRA		; set data mode, interrupts disabled (side A)
+		clr PIA$1+P.PICRB		; set direction mode for PIA1 B
+		ldd #$3cfa			; more initializers
+		stb PIA$1+P.PIIOB		; set PIA1 B to output except for RS232 input and RAM Size
+		sta PIA$1+P.PICRB		; set PIA B to data mode, no interrupts, sound endabled
 ;
 ;  Set SAM and VDG modes
 ;
         LDD     #D0.SAM         ;magic SAM bits!
         JSR     SAM             ;turn on graphics screen
         LDA     #%11111000      ;insure VDG and SAM are in sync
-        STA     P.PIIOB,X       ;   .
+        STA     PIA$1+P.PIIOB   ;   .
 ;
 ;  Zero All Of RAM
 ;
@@ -273,11 +273,18 @@ DEMO10  DEC     AUTFLG          ;indicate AUTOPLAY mode
 ;
 ;  IRQSYN: Enable and Synchronize on IRQ
 ;
-IRQSYN  LDD     #$343C          ;bit patterns
-        STA     P.PICRA+PIA$1   ;turn off cassette motor
-        STB     P.PICRB+PIA$1   ;enable Six BIT Sounds
-        INCA                    ;ACCA <- $35
-        STA     P.PICRB+PIA$0   ;SEL2=0, IRQ on falling edge FS
+; This routine sets up PIA1 for DoD mode. This means single bit sound
+; is set to output, rs232 output is set to input, andVSYNC is enabled.
+IRQSYN  LDD     #$34FC          ;bit patterns
+		clr PIA$1+P.PICRA		; set direction mode for side A
+		stb PIA$1			; set direction properly
+		sta PIA$1+P.PICRA		; set back to data mode, no interrupts, cassette off
+		inca				; adjust to enable interrupt
+		sta PIA$0+P.PICRB		; set data mode, enable VSYNC, enable LSB of analog MUX
+		ldd #$3cfa			; initializer for side B
+		clr PIA$1+P.PICRB		; set direction mode for side B
+		stb PIA$1+P.PIIOB		; set direction properly
+		sta PIA$1+P.PICRB		; set back to data mode, no interrupts, sound on
         CWAI    #~(CC.I&$00FF)  ;synchronize on first IRQ
         RTS
 ;

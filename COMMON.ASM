@@ -17,14 +17,27 @@
 ;
 ;       B - Queue Pointer or Zero (destroy the TCB)
 ;
+LC16D		stx CBUFAD			; set address to read to
+                swi2
+		fcb BLKIN			; read a block
+		tsta				; is it the end of the file?
+		lbne RESVEC			; brif so - premature end, fail with a reset
+		ldb BLKTYP			; get type of block
+		rts
 ;
-;  PIETAP: Initialize PIA's for Tape Operations
+;  PIATAP: Initialize PIA's for Tape Operations
 ;
-PIATAP  LDU     #PIA$0          ;addr of PIA #0 ($FF00)
-        LDD     #$343C          ;magic PIA bit patterns
-        STA     P.PICRB,U       ;SEL2=0, Disable IRQ to CPU
-        STA     P.PICRB+PIA$1   ;Six Bit Sounds OFF, Disable FIRQ to CPU
-        STB     P.PICRA+PIA$1   ;Cassette Motor ON, Disable FIRQ to CPU
+PIATAP  ldd #$34fe				; initializer for side A
+		sta PIA$0+P.PICRB		; disable VSYNC interrupt, clear analogue mux MSB
+		clr PIA$1+P.PICRA		; set direction mode for side A
+		stb PIA$1			; set direction properly (sets RS232 to output)
+		sta PIA$1+1			; set back to data mode, no interrupts, cassette off
+		ldb #2				; set RS232 to "marking"
+		stb PIA$1
+		ldd #$3cf8			; initializer for side B
+		clr PIA$1+P.PICRB		; set direction mode for side B
+		stb PIA$1+P.PIIOB		; set direction properly, disable sound, one bit sound as input
+		sta PIA$1+P.PICRB		; set back to data mode, no interrupts, sound on
         RTS
 ;
 ;  TAPDLY: Delay to insure motor has started
@@ -33,15 +46,6 @@ TAPDLY  LDX     BIGZER          ;insure motor is running
 TDLY10  LEAX    -1,X            ;   .
         BNE     TDLY10          ;   .
         RTS                     ;bye
-
-
-
-LOAD90  JSR     IRQSYN          ;enable/sync on IRQ
-        CLR     ZFLAG           ;indicate tape operation complete
-        SWI                     ;show what is going on
-        FCB     INIVU           ;   .
-        SWI                     ;prompt the human
-        FCB     PROMPT          ;   .
 
 
 

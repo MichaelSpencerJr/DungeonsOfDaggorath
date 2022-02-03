@@ -125,11 +125,11 @@ file_ioerror	bsr restore_dp			; reset DP properly
 ; Exit with C clear if no error and C set if error.
 save_game	pshs d,x,y,u			; save registers
 		jsr loadsave_setfn		; set up file name
-		jsr PIATAP      		; turn off IRQs etc
+		jsr PIATAP      		; reset PIAs to Basic mode
 		ldd #$0100			; set to "binary data" format
 		jsr file_openo			; open file for output
 		beq save_game004		; brif no error opening file
-save_gameerr	jsr IRQSYN      		; turn IRQs back on
+save_gameerr	jsr IRQSYN      		; restore PIAs to daggorath mode
 		coma				; flag error on save
 		puls d,x,y,u,pc			; return to caller
 file_writen	lda ,x+				; get byte to write
@@ -215,7 +215,7 @@ save_game018	lda ,x+				; fetch byte
 		blo save_game018		; brif not
 		jsr file_close			; close the disk file
 		lbne save_gameerr		; brif error closing (writing buffer failed)
-		jsr IRQSYN      		; turn IRQs back on
+		jsr IRQSYN      		; restore PIAs to daggorath mode
 		clra				; clear carry for success
 		puls d,x,y,u,pc			; restore registers and return
 save_writesched	subd #TCBLND			; adjust to offset in scheduling table
@@ -259,12 +259,12 @@ loadsave_setfn3	ldd #'D*256+'O			; set up to place extension
 load_game	clrb				; mark current game still valid
 		pshs d,x,y,u			; save registers
 		bsr loadsave_setfn		; set up the file name correctly
-		jsr PIATAP      		; disable IRQs, etc.
+		jsr PIATAP      		; set up PIA for Basic I/O
 		jsr file_openi			; open file for output
 		beq load_game004		; brif no error opening file
 		bra load_gameerrx		; throw error if open failed
 load_gameerr	jsr file_close			; close the file if it's open
-load_gameerrx	jsr IRQSYN      		; turn IRQs back on
+load_gameerrx	jsr IRQSYN      		; restore PIAs to daggorath mode
 		coma				; flag error on save
 		puls d,x,y,u,pc			; return to caller
 file_readn	jsr file_read			; read byte
@@ -394,7 +394,7 @@ load_game020	lda ,x+				; fetch flag
 		bpl load_game020		; brif we didn't consume a flag
 		decb				; are we at the right set of data for the level?
 		bpl load_game019		; brif not - save new pointer and search again
-		jsr IRQSYN      		; turn IRQs back on
+		jsr IRQSYN      		; restore PIAs to daggorath mode
 		clra				; clear carry for success
 		puls d,x,y,u,pc			; restore registers and return
 load_readsched	ldd #TCBLND			; set the bias for the read
