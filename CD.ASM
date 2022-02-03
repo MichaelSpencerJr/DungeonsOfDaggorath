@@ -142,16 +142,8 @@ V$FIRQ  EQU     $010F
 ; BASIC ROM Routines
 ;
 POLCAT  EQU     $A000
-CHROUT  EQU     $A002
-CSRDON  EQU     $A004
-BLKIN   EQU     $A006
-BLKOUT  EQU     $A008
-JOYIN   EQU     $A00A
-WRTLDR  EQU     $A00C
 ;
 ; DISK BASIC constants
-;
-ROMTAB		equ $A000
 ;
 BLKTYP		equ $7c
 BLKLEN		equ $7d

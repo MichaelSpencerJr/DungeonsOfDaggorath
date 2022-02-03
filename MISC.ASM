@@ -38,25 +38,6 @@ SETRAX  STA     ,X+             ;set the next byte
 
 
 ;
-;  BASICX: Transfer to BASIC ROM Routine
-;
-BASICX  CLRB                    ;switch to BASIC DP
-        TFR     B,DP            ;   .
-;
-        LDU     12,S            ;load return addr
-        LDB     ,U+             ;load BASIC parameter
-        STU     12,S            ;update return addr
-;
-        LDU     #$A000          ;BASIC ROM Dispatch Table
-        JSR     [B,U]           ;dispatch to basic
-;
-        STA     3,S             ;return ACCA
-        STX     6,S             ;return IX
-        RTS
-
-
-
-;
 ;  WIZIX: Fade In the Wizard
 ;
 ;  Inputs:

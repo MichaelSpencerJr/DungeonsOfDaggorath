@@ -35,22 +35,6 @@ SSER10  LDB     ,U+             ;load next offset
         LDU     10,S            ;   .
         JSR     [,S++]          ;disatch to routine/exit
         RTI                     ;dismiss the interrupt
-;
-;  SW2SER: SWI2 Interrupt Handler
-;
-SW2SER  CLRB                    ;switch to BASIC dp
-        TFR     B,DP            ;   .
-;
-        LDU     10,S            ;load return addr
-        LDB     ,U+             ;load BASIC parameter byte
-        STU     10,S            ;update return addr
-;
-        LDU     #$A000          ;table base addr
-        JSR     [B,U]           ;dispatch to routine
-;
-        STA     1,S             ;return parameters
-        STX     4,S             ;   .
-        RTI                     ;bye
 
 
 

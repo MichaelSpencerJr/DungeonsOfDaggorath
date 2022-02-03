@@ -63,8 +63,7 @@ RAMDAT  EQU     *
 ;
 ;  Interrupt Vectors
 ;
-        INI     V$SWI2,3*2      ;two interrupt vectors
-        JMP     SW2SER          ;SWI2
+        INI     V$SWI,3         ;two interrupt vectors
         JMP     SWISER          ;SWI
         INI     V$IRQ,3*1       ;one IRQ vector        
         JMP     CLOCK           ;IRQ

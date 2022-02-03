@@ -408,8 +408,9 @@ CLK50   TST     FAINT           ;have we fainted?
 ;
 ;  GAME - Use POLCAT Routine/Buffer Chars
 ;
-CLK60   SWI2                    ;scan the keyboard
-        FCB     POLCAT-$A000    ;   .
+CLK60   jsr set_basdp			; set up DP for ROM call
+        JSR     [POLCAT]        ;scan the keyboard
+        jsr restore_dp			; reset to DoD DP
         TSTA                    ;check for nulls
         BEQ     CLK90           ;   ignore nulls
         BSR     KBDPUT          ;deposit char in buffer
