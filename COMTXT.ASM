@@ -113,41 +113,40 @@ LSLD    LSLB                    ;   .
 ;       U - Pointer to TXB
 ;
 TXTDPB  PSHS    A,B,X,Y,U       ;save regs
-;
-;  Select Proper Character Set
-;
-        CMPA    #$20            ;normal character?
-        BLO     NORDPB          ;   yes
-;
-;  Special Characters
-;
-        SUBA    #$20            ;offset = (char value - $20) * 7
-        LDB     #7              ;   .
-        MUL                     ;   .
-        ADDD    #SPCTAB         ;special character table
-        TFR     D,X             ;software character addr
-        BRA     DPB00           ;drop into common code
-;
-;  Normal Characters
-;
-NORDPB  LDB     #5              ;offset = char value * 5
-        MUL                     ;   .
-        ADDD    #SWCTAB         ;software char table base addr
-        TFR     D,X             ;5-bit string addr
-        LDU     #SWCHAR+1       ;s/w char expansion buffer
-        SWI                     ;expand the string
-        FCB     EXPAN0          ;   .
-;
-;
-;  Center 5-bit data in each byte
-;
-        LDX     #SWCHAR+8       ;starting point
-NDPB10  LSL     ,-X             ;shift previous char
-        LSL     ,X              ;   .
-        CMPX    #SWCHAR+1       ;done?
-        BHI     NDPB10          ;   nope
-        LDU     6,S             ;restore TXB ptr
-;
+
+skip2		macro noexpand
+		fcb $8c
+		endm
+
+		tsta				; is it space?
+		beq LCA29b			; brif so
+		cmpa #$1b			; is it an printing character?
+		blo LCA29a			; brif so
+		beq LCA29c			; brif !
+		cmpa #$1c			; is it _?
+		beq LCA29d			; brif so
+		cmpa #$1d			; is it ??
+		beq LCA29e			; brif so
+		cmpa #$1e			; is it .?
+		beq LCA29f			; brif so
+		adda #128-32			; offset to special characters in font data
+		skip2				; go render the font data
+LCA29a		adda #$40			; adjust to letter area of font
+		skip2				; go render font data
+LCA29b		lda #32				; code for space
+		skip2
+LCA29c		lda #'!				; code for !
+		skip2
+LCA29d		lda #'_				; code for _
+		skip2
+LCA29e		lda #'?				; code for ?
+		skip2
+LCA29f		lda #'.				; code for .
+		ldb #8				; 8 bytes per font entry
+		mul				; now D is offset
+		addd #SWCTAB-(32*8)		; offset into table
+		tfr d,x				; put pointer somewhere useful
+
 
 
 
@@ -173,11 +172,11 @@ DPB00   LDD     P.TXCUR,U       ;load cursor position
         TFR     D,Y             ;transfer to index register
 ;
 ;  At this point:
-;       X - ptr to software character (7-bytes)
+;       X - ptr to software character (8-bytes)
 ;       Y - display screen addr
 ;       U - ptr to TXB
 ;
-        LDB     #7              ;loop count
+        LDB     #8              ;loop count
 DPB10   LDA     ,X+             ;load next byte
         EORA    P.TXINV,U       ;process inverse mode
         STA     ,Y              ;deposit into display

@@ -18,201 +18,869 @@
 
 SWCTAB  EQU     *               ;where the tables begin
 ;
-        FCB     %00110000       ;* Space         = $00
-        FCB     %00000000       ;* Space         = $00
-        FCB     %00000000       ;* Space         = $00
-        FCB     %00000000       ;* Space         = $00
-        FCB     %00000000       ;* Space         = $00
+        FCB     %00000000       ; space
+        FCB     %00000000       ; space
+        FCB     %00000000       ; space
+        FCB     %00000000       ; space
+        FCB     %00000000       ; space
+        FCB     %00000000       ; space
+        FCB     %00000000       ; space
+        FCB     %00000000       ; space
 ;
-        FCB     %00110001       ;* Letter A      = $01
-        FCB     %00010101       ;* Letter A      = $01
-        FCB     %00011000       ;* Letter A      = $01
-        FCB     %11111110       ;* Letter A      = $01
-        FCB     %00110001       ;* Letter A      = $01
-;                 
-        FCB     %00110111       ;* Letter B      = $02
-        FCB     %10100011       ;* Letter B      = $02
-        FCB     %00011111       ;* Letter B      = $02
-        FCB     %01000110       ;* Letter B      = $02
-        FCB     %00111110       ;* Letter B      = $02
-;                 
-        FCB     %00110011       ;* Letter C      = $03
-        FCB     %10100011       ;* Letter C      = $03
-        FCB     %00001000       ;* Letter C      = $03
-        FCB     %01000010       ;* Letter C      = $03
-        FCB     %00101110       ;* Letter C      = $03
-;                 
-        FCB     %00110111       ;* Letter D      = $04
-        FCB     %10100011       ;* Letter D      = $04
-        FCB     %00011000       ;* Letter D      = $04
-        FCB     %11000110       ;* Letter D      = $04
-        FCB     %00111110       ;* Letter D      = $04
-;                 
-        FCB     %00110111       ;* Letter E      = $05
-        FCB     %11100001       ;* Letter E      = $05
-        FCB     %00001111       ;* Letter E      = $05
-        FCB     %01000010       ;* Letter E      = $05
-        FCB     %00011111       ;* Letter E      = $05
-;                 
-        FCB     %00110111       ;* Letter F      = $06
-        FCB     %11100001       ;* Letter F      = $06
-        FCB     %00001111       ;* Letter F      = $06
-        FCB     %01000010       ;* Letter F      = $06
-        FCB     %00010000       ;* Letter F      = $06
-;                 
-        FCB     %00110011       ;* Letter G      = $07
-        FCB     %11100011       ;* Letter G      = $07
-        FCB     %00001000       ;* Letter G      = $07
-        FCB     %01001110       ;* Letter G      = $07
-        FCB     %00101111       ;* Letter G      = $07
-;                 
-        FCB     %00110100       ;* Letter H      = $08
-        FCB     %01100011       ;* Letter H      = $08
-        FCB     %00011111       ;* Letter H      = $08
-        FCB     %11000110       ;* Letter H      = $08
-        FCB     %00110001       ;* Letter H      = $08
-;                 
-
-
-
-        FCB     %00110011       ;* Letter I      = $09
-        FCB     %10001000       ;* Letter I      = $09
-        FCB     %01000010       ;* Letter I      = $09
-        FCB     %00010000       ;* Letter I      = $09
-        FCB     %10001110       ;* Letter I      = $09
-;                 
-        FCB     %00110000       ;* Letter J      = $0A
-        FCB     %01000010       ;* Letter J      = $0A
-        FCB     %00010000       ;* Letter J      = $0A
-        FCB     %10000110       ;* Letter J      = $0A
-        FCB     %00101110       ;* Letter J      = $0A
-;                 
-        FCB     %00110100       ;* Letter K      = $0B
-        FCB     %01100101       ;* Letter K      = $0B
-        FCB     %01001100       ;* Letter K      = $0B
-        FCB     %01010010       ;* Letter K      = $0B
-        FCB     %01010001       ;* Letter K      = $0B
-;                 
-        FCB     %00110100       ;* Letter L      = $0C
-        FCB     %00100001       ;* Letter L      = $0C
-        FCB     %00001000       ;* Letter L      = $0C
-        FCB     %01000010       ;* Letter L      = $0C
-        FCB     %00011111       ;* Letter L      = $0C
-;                 
-        FCB     %00110100       ;* Letter M      = $0D
-        FCB     %01110111       ;* Letter M      = $0D
-        FCB     %01011010       ;* Letter M      = $0D
-        FCB     %11010110       ;* Letter M      = $0D
-        FCB     %00110001       ;* Letter M      = $0D
-;                 
-        FCB     %00110100       ;* Letter N      = $0E
-        FCB     %01100011       ;* Letter N      = $0E
-        FCB     %10011010       ;* Letter N      = $0E
-        FCB     %11001110       ;* Letter N      = $0E
-        FCB     %00110001       ;* Letter N      = $0E
-;                 
-        FCB     %00110011       ;* Letter O      = $0F
-        FCB     %10100011       ;* Letter O      = $0F
-        FCB     %00011000       ;* Letter O      = $0F
-        FCB     %11000110       ;* Letter O      = $0F
-        FCB     %00101110       ;* Letter O      = $0F
-;                 
-        FCB     %00110111       ;* Letter P      = $10
-        FCB     %10100011       ;* Letter P      = $10
-        FCB     %00011111       ;* Letter P      = $10
-        FCB     %01000010       ;* Letter P      = $10
-        FCB     %00010000       ;* Letter P      = $10
-;                 
-        FCB     %00110011       ;* Letter Q      = $11
-        FCB     %10100011       ;* Letter Q      = $11
-        FCB     %00011000       ;* Letter Q      = $11
-        FCB     %11010110       ;* Letter Q      = $11
-        FCB     %01001101       ;* Letter Q      = $11
-;                 
-        FCB     %00110111       ;* Letter R      = $12
-        FCB     %10100011       ;* Letter R      = $12
-
-
-
-        FCB     %00011111       ;* Letter R      = $12
-        FCB     %01010010       ;* Letter R      = $12
-        FCB     %01010001       ;* Letter R      = $12
-;                 
-        FCB     %00110011       ;* Letter S      = $13
-        FCB     %10100011       ;* Letter S      = $13
-        FCB     %00000111       ;* Letter S      = $13
-        FCB     %00000110       ;* Letter S      = $13
-        FCB     %00101110       ;* Letter S      = $13
-;                 
-        FCB     %00110111       ;* Letter T      = $14
-        FCB     %11101010       ;* Letter T      = $14
-        FCB     %01000010       ;* Letter T      = $14
-        FCB     %00010000       ;* Letter T      = $14
-        FCB     %10000100       ;* Letter T      = $14
-;                 
-        FCB     %00110100       ;* Letter U      = $15
-        FCB     %01100011       ;* Letter U      = $15
-        FCB     %00011000       ;* Letter U      = $15
-        FCB     %11000110       ;* Letter U      = $15
-        FCB     %00101110       ;* Letter U      = $15
-;                 
-        FCB     %00110100       ;* Letter V      = $16
-        FCB     %01100011       ;* Letter V      = $16
-        FCB     %00010101       ;* Letter V      = $16
-        FCB     %00101000       ;* Letter V      = $16
-        FCB     %10000100       ;* Letter V      = $16
-;                 
-        FCB     %00110100       ;* Letter W      = $17
-        FCB     %01100011       ;* Letter W      = $17
-        FCB     %00011010       ;* Letter W      = $17
-        FCB     %11010111       ;* Letter W      = $17
-        FCB     %01110001       ;* Letter W      = $17
-;                 
-        FCB     %00110100       ;* Letter X      = $18
-        FCB     %01100010       ;* Letter X      = $18
-        FCB     %10100010       ;* Letter X      = $18
-        FCB     %00101010       ;* Letter X      = $18
-        FCB     %00110001       ;* Letter X      = $18
-;                 
-        FCB     %00110100       ;* Letter Y      = $19
-        FCB     %01100010       ;* Letter Y      = $19
-        FCB     %10100010       ;* Letter Y      = $19
-        FCB     %00010000       ;* Letter Y      = $19
-        FCB     %10000100       ;* Letter Y      = $19
-;                 
-        FCB     %00110111       ;* Letter Z      = $1A
-        FCB     %11000010       ;* Letter Z      = $1A
-        FCB     %00100010       ;* Letter Z      = $1A
-        FCB     %00100010       ;* Letter Z      = $1A
-        FCB     %00011111       ;* Letter Z      = $1A
-;                 
-        FCB     %00110001       ;* Exclamation point       Code = $1B
-        FCB     %00001000       ;* Exclamation point       Code = $1B
-        FCB     %01000010       ;* Exclamation point       Code = $1B
-        FCB     %00010000       ;* Exclamation point       Code = $1B
-
-
-
-        FCB     %00000100       ;* Exclamation point       Code = $1B
-;                 
-        FCB     %00110000       ;* Underline     = $1C
-        FCB     %00000000       ;* Underline     = $1C
-        FCB     %00000000       ;* Underline     = $1C
-        FCB     %00000000       ;* Underline     = $1C
-        FCB     %00011111       ;* Underline     = $1C
-;                 
-        FCB     %00110011       ;* Question Mark = $1D
-        FCB     %10100010       ;* Question Mark = $1D
-        FCB     %00010011       ;* Question Mark = $1D
-        FCB     %00010000       ;* Question Mark = $1D
-        FCB     %00000100       ;* Question Mark = $1D
-;                 
-        FCB     %00110000       ;* Period        = $1E
-        FCB     %00000000       ;* Period        = $1E
-        FCB     %00000000       ;* Period        = $1E
-        FCB     %00000000       ;* Period        = $1E
-        FCB     %00000100       ;* Period        = $1E
+        FCB     %00010000       ; !
+        FCB     %00010000       ; !
+        FCB     %00010000       ; !
+        FCB     %00010000       ; !
+        FCB     %00010000       ; !
+        FCB     %00000000       ; !
+        FCB     %00010000       ; !
+        FCB     %00000000       ; !
 ;
+        FCB     %00101000       ; "
+        FCB     %00101000       ; "
+        FCB     %00101000       ; "
+        FCB     %00000000       ; "
+        FCB     %00000000       ; "
+        FCB     %00000000       ; "
+        FCB     %00000000       ; "
+        FCB     %00000000       ; "
+;
+        FCB     %00101000       ; #
+        FCB     %00101000       ; #
+        FCB     %01111100       ; #
+        FCB     %00101000       ; #
+        FCB     %01111100       ; #
+        FCB     %00101000       ; #
+        FCB     %00101000       ; #
+        FCB     %00000000       ; #
+;
+        FCB     %00010000       ; $
+        FCB     %00111100       ; $
+        FCB     %01010000       ; $
+        FCB     %00111000       ; $
+        FCB     %00010100       ; $
+        FCB     %01111011       ; $  FIXME last two 1s should be 0s
+        FCB     %00010000       ; $
+        FCB     %00000000       ; $
+;
+        FCB     %01100000       ; %
+        FCB     %01100100       ; %
+        FCB     %00001000       ; %
+        FCB     %00010000       ; %
+        FCB     %00100000       ; %
+        FCB     %01001100       ; %
+        FCB     %00001100       ; %
+        FCB     %00000000       ; %
+;
+        FCB     %00100000       ; &
+        FCB     %01010000       ; &
+        FCB     %01010000       ; &
+        FCB     %00100000       ; &
+        FCB     %01010100       ; &
+        FCB     %01001000       ; &
+        FCB     %00110100       ; &
+        FCB     %00000000       ; &
+;
+        FCB     %00010000       ; '
+        FCB     %00010000       ; '
+        FCB     %00010000       ; '
+        FCB     %00000000       ; '
+        FCB     %00000000       ; '
+        FCB     %00000000       ; '
+        FCB     %00000000       ; '
+        FCB     %00000000       ; '
+;
+        FCB     %00001000       ; (
+        FCB     %00010000       ; (
+        FCB     %00100000       ; (
+        FCB     %00100000       ; (
+        FCB     %00100000       ; (
+        FCB     %00010000       ; (
+        FCB     %00001000       ; (
+        FCB     %00000000       ; (
+;
+        FCB     %00100000       ; )
+        FCB     %00010000       ; )
+        FCB     %00001000       ; )
+        FCB     %00001000       ; )
+        FCB     %00001000       ; )
+        FCB     %00010000       ; )
+        FCB     %00100000       ; )
+        FCB     %00000000       ; )
+;
+        FCB     %00000000       ; *
+        FCB     %00010000       ; *
+        FCB     %01010100       ; *
+        FCB     %00111000       ; *
+        FCB     %00111000       ; *
+        FCB     %01010100       ; *
+        FCB     %00010000       ; *
+        FCB     %00000000       ; *
+;
+        FCB     %00000000       ; +
+        FCB     %00010000       ; +
+        FCB     %00010000       ; +
+        FCB     %01111100       ; +
+        FCB     %00010000       ; +
+        FCB     %00010000       ; +
+        FCB     %00000000       ; +
+        FCB     %00000000       ; +
+;
+        FCB     %00000000       ; ,
+        FCB     %00000000       ; ,
+        FCB     %00000000       ; ,
+        FCB     %00000000       ; ,
+        FCB     %00000000       ; ,
+        FCB     %00010000       ; ,
+        FCB     %00010000       ; ,
+        FCB     %00100000       ; ,
+;
+        FCB     %00000000       ; -
+        FCB     %00000000       ; -
+        FCB     %00000000       ; -
+        FCB     %01111100       ; -
+        FCB     %00000000       ; -
+        FCB     %00000000       ; -
+        FCB     %00000000       ; -
+        FCB     %00000000       ; -
+;
+        FCB     %00000000       ; .
+        FCB     %00000000       ; .
+        FCB     %00000000       ; .
+        FCB     %00000000       ; .
+        FCB     %00000000       ; .
+        FCB     %00000000       ; .
+        FCB     %00010000       ; .
+        FCB     %00000000       ; .
+;
+        FCB     %00000000       ; /
+        FCB     %00000100       ; /
+        FCB     %00001000       ; /
+        FCB     %00010000       ; /
+        FCB     %00100000       ; /
+        FCB     %01000000       ; /
+        FCB     %00000000       ; /
+        FCB     %00000000       ; /
+;
+        FCB     %00111000       ; 0
+        FCB     %01000100       ; 0
+        FCB     %01001100       ; 0
+        FCB     %01010100       ; 0
+        FCB     %01100100       ; 0
+        FCB     %01000100       ; 0
+        FCB     %00111000       ; 0
+        FCB     %00000000       ; 0
+;
+        FCB     %00010000       ; 1
+        FCB     %00110000       ; 1
+        FCB     %00010000       ; 1
+        FCB     %00010000       ; 1
+        FCB     %00010000       ; 1
+        FCB     %00010000       ; 1
+        FCB     %00111000       ; 1
+        FCB     %00000000       ; 1
+;
+        FCB     %00111000       ; 2
+        FCB     %01000100       ; 2
+        FCB     %00000100       ; 2
+        FCB     %00111000       ; 2
+        FCB     %01000000       ; 2
+        FCB     %01000000       ; 2
+        FCB     %01111100       ; 2
+        FCB     %00000000       ; 2
+;
+        FCB     %00111000       ; 3
+        FCB     %01000100       ; 3
+        FCB     %00000100       ; 3
+        FCB     %00001000       ; 3
+        FCB     %00000100       ; 3
+        FCB     %01000100       ; 3
+        FCB     %00111000       ; 3
+        FCB     %00000000       ; 3
+;
+        FCB     %00001000       ; 4
+        FCB     %00011000       ; 4
+        FCB     %00101000       ; 4
+        FCB     %01001000       ; 4
+        FCB     %01111100       ; 4
+        FCB     %00001000       ; 4
+        FCB     %00001000       ; 4
+        FCB     %10010000       ; 4  FIXME should be all zeroes
+;
+        FCB     %01111100       ; 5
+        FCB     %01000000       ; 5
+        FCB     %01111000       ; 5
+        FCB     %00000100       ; 5
+        FCB     %00000100       ; 5
+        FCB     %01000100       ; 5
+        FCB     %00111000       ; 5
+        FCB     %00000000       ; 5
+;
+        FCB     %00111000       ; 6
+        FCB     %01000000       ; 6
+        FCB     %01000000       ; 6
+        FCB     %01111000       ; 6
+        FCB     %01000100       ; 6
+        FCB     %01000100       ; 6
+        FCB     %00111000       ; 6
+        FCB     %00000000       ; 6
+;
+        FCB     %01111100       ; 7
+        FCB     %00000100       ; 7
+        FCB     %00001000       ; 7
+        FCB     %00010000       ; 7
+        FCB     %00100000       ; 7
+        FCB     %01000000       ; 7
+        FCB     %01000000       ; 7
+        FCB     %00000000       ; 7
+;
+        FCB     %00111000       ; 8
+        FCB     %01000100       ; 8
+        FCB     %01000100       ; 8
+        FCB     %00111000       ; 8
+        FCB     %01000100       ; 8
+        FCB     %01000100       ; 8
+        FCB     %00111000       ; 8
+        FCB     %00000000       ; 8
+;
+        FCB     %00111000       ; 9
+        FCB     %01000100       ; 9
+        FCB     %01000100       ; 9
+        FCB     %00111000       ; 9
+        FCB     %00000100       ; 9
+        FCB     %00000100       ; 9
+        FCB     %00111000       ; 9
+        FCB     %00000000       ; 9
+;
+        FCB     %00000000       ; :
+        FCB     %00000000       ; :
+        FCB     %00010000       ; :
+        FCB     %00000000       ; :
+        FCB     %00000000       ; :
+        FCB     %00010000       ; :
+        FCB     %00000000       ; :
+        FCB     %00000000       ; :
+;
+        FCB     %00000000       ; ;
+        FCB     %00000000       ; ;
+        FCB     %00010000       ; ;
+        FCB     %00000000       ; ;
+        FCB     %00000000       ; ;
+        FCB     %00010000       ; ;
+        FCB     %00010000       ; ;
+        FCB     %00100000       ; ;
+;
+        FCB     %00001000       ; <
+        FCB     %00010000       ; <
+        FCB     %00100000       ; <
+        FCB     %01000000       ; <
+        FCB     %00100000       ; <
+        FCB     %00010000       ; <
+        FCB     %00001000       ; <
+        FCB     %00000000       ; <
+;
+        FCB     %00000000       ; =
+        FCB     %00000000       ; =
+        FCB     %01111100       ; =
+        FCB     %00000000       ; =
+        FCB     %01111100       ; =
+        FCB     %00000000       ; =
+        FCB     %00000000       ; =
+        FCB     %00000000       ; =
+;
+        FCB     %00100000       ; >
+        FCB     %00010000       ; >
+        FCB     %00001000       ; >
+        FCB     %00000100       ; >
+        FCB     %00001000       ; >
+        FCB     %00010000       ; >
+        FCB     %00100000       ; >
+        FCB     %00000000       ; >
+;
+        FCB     %00111000       ; ?
+        FCB     %01000100       ; ?
+        FCB     %00000100       ; ?
+        FCB     %00011000       ; ?
+        FCB     %00010000       ; ?
+        FCB     %00000000       ; ?
+        FCB     %00010000       ; ?
+        FCB     %00000000       ; ?
+;
+        FCB     %00111000       ; @
+        FCB     %01000100       ; @
+        FCB     %00000100       ; @
+        FCB     %00110100       ; @
+        FCB     %01001100       ; @
+        FCB     %01001100       ; @
+        FCB     %00111000       ; @
+        FCB     %00000000       ; @
+;
+        FCB     %00010000       ; A
+        FCB     %00101000       ; A
+        FCB     %01000100       ; A
+        FCB     %01000100       ; A
+        FCB     %01111100       ; A
+        FCB     %01000100       ; A
+        FCB     %01000100       ; A
+        FCB     %00000000       ; A
+;
+        FCB     %01111000       ; B
+        FCB     %01000100       ; B
+        FCB     %01000100       ; B
+        FCB     %01111000       ; B
+        FCB     %01000100       ; B
+        FCB     %01000100       ; B
+        FCB     %01111000       ; B
+        FCB     %00000000       ; B
+;
+        FCB     %00111000       ; C
+        FCB     %01000100       ; C
+        FCB     %01000000       ; C
+        FCB     %01000000       ; C
+        FCB     %01000000       ; C
+        FCB     %01000100       ; C
+        FCB     %00111000       ; C
+        FCB     %00000000       ; C
+;
+        FCB     %01111000       ; D
+        FCB     %01000100       ; D
+        FCB     %01000100       ; D
+        FCB     %01000100       ; D
+        FCB     %01000100       ; D
+        FCB     %01000100       ; D
+        FCB     %01111000       ; D
+        FCB     %00000000       ; D
+;
+        FCB     %01111100       ; E
+        FCB     %01000000       ; E
+        FCB     %01000000       ; E
+        FCB     %01111000       ; E
+        FCB     %01000000       ; E
+        FCB     %01000000       ; E
+        FCB     %01111100       ; E
+        FCB     %00000000       ; E
+;
+        FCB     %01111100       ; F
+        FCB     %01000000       ; F
+        FCB     %01000000       ; F
+        FCB     %01111000       ; F
+        FCB     %01000000       ; F
+        FCB     %01000000       ; F
+        FCB     %01000000       ; F
+        FCB     %00000000       ; F
+;
+        FCB     %00111100       ; G
+        FCB     %01000100       ; G
+        FCB     %01000000       ; G
+        FCB     %01000000       ; G
+        FCB     %01001100       ; G
+        FCB     %01000100       ; G
+        FCB     %00111100       ; G
+        FCB     %00000000       ; G
+;
+        FCB     %01000100       ; H
+        FCB     %01000100       ; H
+        FCB     %01000100       ; H
+        FCB     %01111100       ; H
+        FCB     %01000100       ; H
+        FCB     %01000100       ; H
+        FCB     %01000100       ; H
+        FCB     %00000000       ; H
+;
+        FCB     %00111000       ; I
+        FCB     %00010000       ; I
+        FCB     %00010000       ; I
+        FCB     %00010000       ; I
+        FCB     %00010000       ; I
+        FCB     %00010000       ; I
+        FCB     %00111000       ; I
+        FCB     %00000000       ; I
+;
+        FCB     %00000100       ; J
+        FCB     %00000100       ; J
+        FCB     %00000100       ; J
+        FCB     %00000100       ; J
+        FCB     %00000100       ; J
+        FCB     %01000100       ; J
+        FCB     %00111000       ; J
+        FCB     %00000000       ; J
+;
+        FCB     %01000100       ; K
+        FCB     %01001000       ; K
+        FCB     %01010000       ; K
+        FCB     %01100000       ; K
+        FCB     %01010000       ; K
+        FCB     %01001000       ; K
+        FCB     %01000100       ; K
+        FCB     %00000000       ; K
+;
+        FCB     %01000000       ; L
+        FCB     %01000000       ; L
+        FCB     %01000000       ; L
+        FCB     %01000000       ; L
+        FCB     %01000000       ; L
+        FCB     %01000000       ; L
+        FCB     %01111100       ; L
+        FCB     %00000000       ; L
+;
+        FCB     %01000100       ; M
+        FCB     %01101100       ; M
+        FCB     %01010100       ; M
+        FCB     %01010100       ; M
+        FCB     %01010100       ; M
+        FCB     %01000100       ; M
+        FCB     %01000100       ; M
+        FCB     %00000000       ; M
+;
+        FCB     %01000100       ; N
+        FCB     %01000100       ; N
+        FCB     %01100100       ; N
+        FCB     %01010100       ; N
+        FCB     %01001100       ; N
+        FCB     %01000100       ; N
+        FCB     %01000100       ; N
+        FCB     %00000000       ; N
+;
+        FCB     %00111000       ; O
+        FCB     %01000100       ; O
+        FCB     %01000100       ; O
+        FCB     %01000100       ; O
+        FCB     %01000100       ; O
+        FCB     %01000100       ; O
+        FCB     %00111000       ; O
+        FCB     %00000000       ; O
+;
+        FCB     %01111000       ; P
+        FCB     %01000100       ; P
+        FCB     %01000100       ; P
+        FCB     %01111000       ; P
+        FCB     %01000000       ; P
+        FCB     %01000000       ; P
+        FCB     %01000000       ; P
+        FCB     %00000000       ; P
+;
+        FCB     %00111000       ; Q
+        FCB     %01000100       ; Q
+        FCB     %01000100       ; Q
+        FCB     %01000100       ; Q
+        FCB     %01010100       ; Q
+        FCB     %01001000       ; Q
+        FCB     %00110100       ; Q
+        FCB     %00000000       ; Q
+;
+        FCB     %01111000       ; R
+        FCB     %01000100       ; R
+        FCB     %01000100       ; R
+        FCB     %01111000       ; R
+        FCB     %01010000       ; R
+        FCB     %01001000       ; R
+        FCB     %01000100       ; R
+        FCB     %00000000       ; R
+;
+        FCB     %00111000       ; S
+        FCB     %01000100       ; S
+        FCB     %01000000       ; S
+        FCB     %00111000       ; S
+        FCB     %00000100       ; S
+        FCB     %01000100       ; S
+        FCB     %00111000       ; S
+        FCB     %00000000       ; S
+;
+        FCB     %01111100       ; T
+        FCB     %01010100       ; T
+        FCB     %00010000       ; T
+        FCB     %00010000       ; T
+        FCB     %00010000       ; T
+        FCB     %00010000       ; T
+        FCB     %00010000       ; T
+        FCB     %00000000       ; T
+;
+        FCB     %01000100       ; U
+        FCB     %01000100       ; U
+        FCB     %01000100       ; U
+        FCB     %01000100       ; U
+        FCB     %01000100       ; U
+        FCB     %01000100       ; U
+        FCB     %00111000       ; U
+        FCB     %00000000       ; U
+;
+        FCB     %01000100       ; V
+        FCB     %01000100       ; V
+        FCB     %01000100       ; V
+        FCB     %00101000       ; V
+        FCB     %00101000       ; V
+        FCB     %00010000       ; V
+        FCB     %00010000       ; V
+        FCB     %00000000       ; V
+;
+        FCB     %01000100       ; W
+        FCB     %01000100       ; W
+        FCB     %01000100       ; W
+        FCB     %01010100       ; W
+        FCB     %01010100       ; W
+        FCB     %01101100       ; W
+        FCB     %01000100       ; W
+        FCB     %00000000       ; W
+;
+        FCB     %01000100       ; X
+        FCB     %01000100       ; X
+        FCB     %00101000       ; X
+        FCB     %00010000       ; X
+        FCB     %00101000       ; X
+        FCB     %01000100       ; X
+        FCB     %01000100       ; X
+        FCB     %00000000       ; X
+;
+        FCB     %01000100       ; Y
+        FCB     %01000100       ; Y
+        FCB     %00101000       ; Y
+        FCB     %00010000       ; Y
+        FCB     %00010000       ; Y
+        FCB     %00010000       ; Y
+        FCB     %00010000       ; Y
+        FCB     %00000000       ; Y
+;
+        FCB     %01111100       ; Z
+        FCB     %00000100       ; Z
+        FCB     %00001000       ; Z
+        FCB     %00010000       ; Z
+        FCB     %00100000       ; Z
+        FCB     %01000000       ; Z
+        FCB     %01111100       ; Z
+        FCB     %00000000       ; Z
+;
+        FCB     %00111000       ; [
+        FCB     %00100000       ; [
+        FCB     %00100000       ; [
+        FCB     %00100000       ; [
+        FCB     %00100000       ; [
+        FCB     %00100000       ; [
+        FCB     %00111000       ; [
+        FCB     %00000000       ; [
+;
+        FCB     %00000000       ; \
+        FCB     %01000000       ; \
+        FCB     %00100000       ; \
+        FCB     %00010000       ; \
+        FCB     %00001000       ; \
+        FCB     %00000100       ; \
+        FCB     %00000000       ; \
+        FCB     %00000000       ; \
+;
+        FCB     %00111000       ; ]
+        FCB     %00001000       ; ]
+        FCB     %00001000       ; ]
+        FCB     %00001000       ; ]
+        FCB     %00001000       ; ]
+        FCB     %00001000       ; ]
+        FCB     %00111000       ; ]
+        FCB     %00000000       ; ]
+;
+        FCB     %00010000       ; ^
+        FCB     %00111000       ; ^
+        FCB     %01010100       ; ^
+        FCB     %00000000       ; ^
+        FCB     %00000000       ; ^
+        FCB     %00000000       ; ^
+        FCB     %00000000       ; ^
+        FCB     %00000000       ; ^
+;
+        FCB     %00000000       ; _
+        FCB     %00000000       ; _
+        FCB     %00000000       ; _
+        FCB     %00000000       ; _
+        FCB     %00000000       ; _
+        FCB     %00000000       ; _
+        FCB     %01111100       ; _
+        FCB     %00000000       ; _
+;
+        FCB     %00010000       ; `
+        FCB     %00010000       ; `
+        FCB     %00001000       ; `
+        FCB     %00000000       ; `
+        FCB     %00000000       ; `
+        FCB     %00000000       ; `
+        FCB     %00000000       ; `
+        FCB     %00000000       ; `
+;
+        FCB     %00000000       ; a
+        FCB     %00000000       ; a
+        FCB     %00111000       ; a
+        FCB     %00000100       ; a
+        FCB     %00111100       ; a
+        FCB     %01000100       ; a
+        FCB     %00111100       ; a
+        FCB     %00000000       ; a
+;
+        FCB     %01000000       ; b
+        FCB     %01000000       ; b
+        FCB     %01011000       ; b
+        FCB     %01100100       ; b
+        FCB     %01000100       ; b
+        FCB     %01100100       ; b
+        FCB     %01011000       ; b
+        FCB     %00000000       ; b
+;
+        FCB     %00000000       ; c
+        FCB     %00000000       ; c
+        FCB     %00111000       ; c
+        FCB     %01000100       ; c
+        FCB     %01000000       ; c
+        FCB     %01000100       ; c
+        FCB     %00111000       ; c
+        FCB     %00000000       ; c
+;
+        FCB     %00000100       ; d
+        FCB     %00000100       ; d
+        FCB     %00110100       ; d
+        FCB     %01001100       ; d
+        FCB     %01000100       ; d
+        FCB     %01001100       ; d
+        FCB     %00110100       ; d
+        FCB     %00000000       ; d
+;
+        FCB     %00000000       ; e
+        FCB     %00000000       ; e
+        FCB     %00111000       ; e
+        FCB     %01000100       ; e
+        FCB     %01111100       ; e
+        FCB     %01000000       ; e
+        FCB     %00111000       ; e
+        FCB     %00000000       ; e
+;
+        FCB     %00001000       ; f
+        FCB     %00010100       ; f
+        FCB     %00010000       ; f
+        FCB     %00111000       ; f
+        FCB     %00010000       ; f
+        FCB     %00010000       ; f
+        FCB     %00010000       ; f
+        FCB     %00000000       ; f
+;
+        FCB     %00000000       ; g
+        FCB     %00000000       ; g
+        FCB     %00110100       ; g
+        FCB     %01001100       ; g
+        FCB     %01001100       ; g
+        FCB     %00110100       ; g
+        FCB     %00000100       ; g
+        FCB     %00111000       ; g
+;
+        FCB     %01000000       ; h
+        FCB     %01000000       ; h
+        FCB     %01011000       ; h
+        FCB     %01100100       ; h
+        FCB     %01000100       ; h
+        FCB     %01000100       ; h
+        FCB     %01000100       ; h
+        FCB     %00000000       ; h
+;
+        FCB     %00000000       ; i
+        FCB     %00010000       ; i
+        FCB     %00000000       ; i
+        FCB     %00010000       ; i
+        FCB     %00010000       ; i
+        FCB     %00010000       ; i
+        FCB     %00111000       ; i
+        FCB     %00000000       ; i
+;
+        FCB     %00000000       ; j
+        FCB     %00000100       ; j
+        FCB     %00000000       ; j
+        FCB     %00000100       ; j
+        FCB     %00000100       ; j
+        FCB     %00000100       ; j
+        FCB     %01000100       ; j
+        FCB     %00111000       ; j
+;
+        FCB     %01000000       ; k
+        FCB     %01000000       ; k
+        FCB     %01001000       ; k
+        FCB     %01010000       ; k
+        FCB     %01100000       ; k
+        FCB     %01010000       ; k
+        FCB     %01001000       ; k
+        FCB     %00000000       ; k
+;
+        FCB     %00110000       ; l
+        FCB     %00010000       ; l
+        FCB     %00010000       ; l
+        FCB     %00010000       ; l
+        FCB     %00010000       ; l
+        FCB     %00010000       ; l
+        FCB     %00111000       ; l
+        FCB     %00000000       ; l
+;
+        FCB     %00000000       ; m
+        FCB     %00000000       ; m
+        FCB     %01101000       ; m
+        FCB     %01010100       ; m
+        FCB     %01010100       ; m
+        FCB     %01010100       ; m
+        FCB     %01010100       ; m
+        FCB     %00000000       ; m
+;
+        FCB     %00000000       ; n
+        FCB     %00000000       ; n
+        FCB     %01011000       ; n
+        FCB     %01100100       ; n
+        FCB     %01000100       ; n
+        FCB     %01000100       ; n
+        FCB     %01000100       ; n
+        FCB     %00000000       ; n
+;
+        FCB     %00000000       ; o
+        FCB     %00000000       ; o
+        FCB     %00111000       ; o
+        FCB     %01000100       ; o
+        FCB     %01000100       ; o
+        FCB     %01000100       ; o
+        FCB     %00111000       ; o
+        FCB     %00000000       ; o
+;
+        FCB     %00000000       ; p
+        FCB     %00000000       ; p
+        FCB     %01111000       ; p
+        FCB     %01000100       ; p
+        FCB     %01000100       ; p
+        FCB     %01111000       ; p
+        FCB     %01000000       ; p
+        FCB     %01000000       ; p
+;
+        FCB     %00000000       ; q
+        FCB     %00000000       ; q
+        FCB     %00111100       ; q
+        FCB     %01000100       ; q
+        FCB     %01000100       ; q
+        FCB     %00111100       ; q
+        FCB     %00000100       ; q
+        FCB     %00000100       ; q
+;
+        FCB     %00000000       ; r
+        FCB     %00000000       ; r
+        FCB     %01011000       ; r
+        FCB     %01100100       ; r
+        FCB     %01000000       ; r
+        FCB     %01000000       ; r
+        FCB     %01000000       ; r
+        FCB     %00000000       ; r
+;
+        FCB     %00000000       ; s
+        FCB     %00000000       ; s
+        FCB     %00111100       ; s
+        FCB     %01000000       ; s
+        FCB     %00111000       ; s
+        FCB     %00000100       ; s
+        FCB     %01111000       ; s
+        FCB     %00000000       ; s
+;
+        FCB     %00100000       ; t
+        FCB     %00100000       ; t
+        FCB     %01110000       ; t
+        FCB     %01110000       ; t
+        FCB     %01110000       ; t
+        FCB     %00100100       ; t
+        FCB     %00011000       ; t
+        FCB     %00000000       ; t
+;
+        FCB     %00000000       ; u
+        FCB     %00000000       ; u
+        FCB     %01000100       ; u
+        FCB     %01000100       ; u
+        FCB     %01000100       ; u
+        FCB     %01001100       ; u
+        FCB     %00110100       ; u
+        FCB     %00000000       ; u
+;
+        FCB     %00000000       ; v
+        FCB     %00000000       ; v
+        FCB     %01000100       ; v
+        FCB     %01000100       ; v
+        FCB     %01000100       ; v
+        FCB     %00101000       ; v
+        FCB     %00010000       ; v
+        FCB     %00000000       ; v
+;
+        FCB     %00000000       ; w
+        FCB     %00000000       ; w
+        FCB     %01000100       ; w
+        FCB     %01010100       ; w
+        FCB     %01010100       ; w
+        FCB     %00101000       ; w
+        FCB     %00101000       ; w
+        FCB     %00000000       ; w
+;
+        FCB     %00000000       ; x
+        FCB     %00000000       ; x
+        FCB     %01000100       ; x
+        FCB     %00101000       ; x
+        FCB     %00010000       ; x
+        FCB     %00101000       ; x
+        FCB     %01000100       ; x
+        FCB     %00000000       ; x
+;
+        FCB     %00000000       ; y
+        FCB     %00000000       ; y
+        FCB     %01000100       ; y
+        FCB     %01000100       ; y
+        FCB     %01000100       ; y
+        FCB     %00111100       ; y
+        FCB     %00000100       ; y
+        FCB     %00111000       ; y
+;
+        FCB     %00000000       ; z
+        FCB     %00000000       ; z
+        FCB     %01111100       ; z
+        FCB     %00001000       ; z
+        FCB     %00010000       ; z
+        FCB     %00100000       ; z
+        FCB     %01111100       ; z
+        FCB     %00000000       ; z
+;
+        FCB     %00001000       ; {
+        FCB     %00010000       ; {
+        FCB     %00010000       ; {
+        FCB     %00100000       ; {
+        FCB     %00010000       ; {
+        FCB     %00010000       ; {
+        FCB     %00001000       ; {
+        FCB     %00000000       ; {
+;
+        FCB     %00010000       ; |
+        FCB     %00010000       ; |
+        FCB     %00010000       ; |
+        FCB     %00000000       ; |
+        FCB     %00010000       ; |
+        FCB     %00010000       ; |
+        FCB     %00010000       ; |
+        FCB     %00000000       ; |
+;
+        FCB     %00100000       ; }
+        FCB     %00010000       ; }
+        FCB     %00010000       ; }
+        FCB     %00001000       ; }
+        FCB     %00010000       ; }
+        FCB     %00010000       ; }
+        FCB     %00100000       ; }
+        FCB     %00000000       ; }
+;
+        FCB     %00100000       ; ~
+        FCB     %01010100       ; ~
+        FCB     %00001000       ; ~
+        FCB     %00000000       ; ~
+        FCB     %00000000       ; ~
+        FCB     %00000000       ; ~
+        FCB     %00000000       ; ~
+        FCB     %00000000       ; ~
+;
+        FCB     %00000000       ; <no character code here - control character>
+        FCB     %00000000       ; <no character code here - control character>
+        FCB     %00000000       ; <no character code here - control character>
+        FCB     %00000000       ; <no character code here - control character>
+        FCB     %00000000       ; <no character code here - control character>
+        FCB     %00000000       ; <no character code here - control character>
+        FCB     %00000000       ; <no character code here - control character>
+        FCB     %00000000       ; <no character code here - control character>
 
 
 
@@ -225,45 +893,41 @@ SWCTAB  EQU     *               ;where the tables begin
 ;
 SPCTAB  EQU     *
 ;
-;  Small Heart Left    Code = $20
+        FCB     %00000000       ; char code 128 - left part of contracted heart
+        FCB     %00000000       ; char code 128 - left part of contracted heart
+        FCB     %00000001       ; char code 128 - left part of contracted heart
+        FCB     %00000001       ; char code 128 - left part of contracted heart
+        FCB     %00000000       ; char code 128 - left part of contracted heart
+        FCB     %00000000       ; char code 128 - left part of contracted heart
+        FCB     %00000000       ; char code 128 - left part of contracted heart
+        FCB     %00000000       ; char code 128 - left part of contracted heart
 ;
-        FCB     %00000000
-        FCB     %00000000
-        FCB     %00000001
-        FCB     %00000001
-        FCB     %00000000
-        FCB     %00000000
-        FCB     %00000000
+        FCB     %00000000       ; char code 129 - right part of contracted heart
+        FCB     %10100000       ; char code 129 - right part of contracted heart
+        FCB     %11110000       ; char code 129 - right part of contracted heart
+        FCB     %11110000       ; char code 129 - right part of contracted heart
+        FCB     %11100000       ; char code 129 - right part of contracted heart
+        FCB     %01000000       ; char code 129 - right part of contracted heart
+        FCB     %00000000       ; char code 129 - right part of contracted heart
+        FCB     %00000000       ; char code 129 - right part of contracted heart
 ;
-;  Small Heart Right    Code = $21
+        FCB     %00000000       ; char code 130 - left half of expanded heart
+        FCB     %00000001       ; char code 130 - left half of expanded heart
+        FCB     %00000011       ; char code 130 - left half of expanded heart
+        FCB     %00000011       ; char code 130 - left half of expanded heart
+        FCB     %00000001       ; char code 130 - left half of expanded heart
+        FCB     %00000000       ; char code 130 - left half of expanded heart
+        FCB     %00000000       ; char code 130 - left half of expanded heart
+        FCB     %00000000       ; char code 130 - left half of expanded heart
 ;
-        FCB     %00000000
-        FCB     %10100000
-        FCB     %11110000
-        FCB     %11110000
-        FCB     %11100000
-        FCB     %01000000
-        FCB     %00000000
-;
-;  Large Heart Left    Code = $22
-;
-        FCB     %00000000
-        FCB     %00000001
-        FCB     %00000011
-        FCB     %00000011
-        FCB     %00000001
-        FCB     %00000000
-        FCB     %00000000
-;
-;  Large Heart Right    Code = $23
-;
-        FCB     %00000000
-        FCB     %10110000
-        FCB     %11111000
-        FCB     %11111000
-        FCB     %11110000
-        FCB     %11100000
-        FCB     %01000000
+        FCB     %00000000       ; char code 131 - right part of expanded heart
+        FCB     %10110000       ; char code 131 - right part of expanded heart
+        FCB     %11111000       ; char code 131 - right part of expanded heart
+        FCB     %11111000       ; char code 131 - right part of expanded heart
+        FCB     %11110000       ; char code 131 - right part of expanded heart
+        FCB     %11100000       ; char code 131 - right part of expanded heart
+        FCB     %01000000       ; char code 131 - right part of expanded heart
+        FCB     %00000000       ; char code 131 - right part of expanded heart
 ;
 ;;;;;        END
 ;
