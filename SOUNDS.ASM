@@ -522,7 +522,6 @@ SNENVA  PSHS    A
 ;  SWITAB: Define SWI Offsets
 ;
 ;
-FOO     SET     SWIBEG          ;offset initialization
 SWITAB  EQU     *
 ;
 ;
@@ -530,94 +529,94 @@ SWITAB  EQU     *
 ;define offset table
 ;
 ;
-        FCB     (SETFAX-FOO) AND $FF    ;set amount of fade based on RANGE
-FOO     SET     SETFAX          ;
+;        FCB     (SETFAX-FOO) AND $FF    ;set amount of fade based on RANGE
+        FDB     SETFAX          ;
 ;
-        FCB     (VCTLSX-FOO) AND $FF    ;vector list processor
-FOO     SET     VCTLSX
+;        FCB     (VCTLSX-FOO) AND $FF    ;vector list processor
+        FDB     VCTLSX
 ;
-        FCB     (TXTSTI-FOO) AND $FF    ;string output (string follows)
-FOO     SET     TXTSTI
+;        FCB     (TXTSTI-FOO) AND $FF    ;string output (string follows)
+        FDB     TXTSTI
 ;
-        FCB     (TXTSTR-FOO) AND $FF    ;string output
-FOO     SET     TXTSTR
+;        FCB     (TXTSTR-FOO) AND $FF    ;string output
+        FDB     TXTSTR
 ;
-        FCB     (TXTCHR-FOO) AND $FF    ;character output
-FOO     SET     TXTCHR
+;        FCB     (TXTCHR-FOO) AND $FF    ;character output
+        FDB     TXTCHR
 ;
-        FCB     (EXPANX-FOO) AND $FF    ;string decompression routine
-FOO     SET     EXPANX
+;        FCB     (EXPANX-FOO) AND $FF    ;string decompression routine
+        FDB     EXPANX
 ;
-        FCB     (EXPA00-FOO) AND $FF    ;   secondary entry point
-FOO     SET     EXPA00
+;        FCB     (EXPA00-FOO) AND $FF    ;   secondary entry point
+        FDB     EXPA00
 ;
-        FCB     (RANDOX-FOO) AND $FF    ;random number generator
-FOO     SET     RANDOX
+;        FCB     (RANDOX-FOO) AND $FF    ;random number generator
+        FDB     RANDOX
 ;
-        FCB     (ZFLIPX-FOO) AND $FF    ;current screen clear
-FOO     SET     ZFLIPX
+;        FCB     (ZFLIPX-FOO) AND $FF    ;current screen clear
+        FDB     ZFLIPX
 ;
-        FCB     (ZFLOPX-FOO) AND $FF    ;alternate screen clear
-FOO     SET     ZFLOPX
+;        FCB     (ZFLOPX-FOO) AND $FF    ;alternate screen clear
+        FDB     ZFLOPX
 ;
-        FCB     (CLRSTX-FOO) AND $FF    ;status line clear
-FOO     SET     CLRSTX
+;        FCB     (CLRSTX-FOO) AND $FF    ;status line clear
+        FDB     CLRSTX
 ;
-        FCB     (CLRPRX-FOO) AND $FF    ;primary text area clear
-FOO     SET     CLRPRX
+;        FCB     (CLRPRX-FOO) AND $FF    ;primary text area clear
+        FDB     CLRPRX
 ;
-        FCB     (HUPDAX-FOO) AND $FF    ;update the heartrate
-FOO     SET     HUPDAX
+;        FCB     (HUPDAX-FOO) AND $FF    ;update the heartrate
+        FDB     HUPDAX
 ;
-        FCB     (STATUX-FOO) AND $FF    ;update the status line
-FOO     SET     STATUX
+;        FCB     (STATUX-FOO) AND $FF    ;update the status line
+        FDB     STATUX
 ;
-        FCB     (PUPDAX-FOO) AND $FF    ;update the main screen
+;        FCB     (PUPDAX-FOO) AND $FF    ;update the main screen
 
 
 
-FOO     SET     PUPDAX
+        FDB     PUPDAX
 ;
-        FCB     (PROMPX-FOO) AND $FF    ;prompt the human for input
-FOO     SET     PROMPX
+;        FCB     (PROMPX-FOO) AND $FF    ;prompt the human for input
+        FDB     PROMPX
 ;
-        FCB     (WAITX-FOO) AND $FF     ;wait for a number of jiffies
-FOO     SET     WAITX
+;        FCB     (WAITX-FOO) AND $FF     ;wait for a number of jiffies
+        FDB     WAITX
 ;
-        FCB     (ZEROX-FOO) AND $FF     ;clear RAM
-FOO     SET     ZEROX
+;        FCB     (ZEROX-FOO) AND $FF     ;clear RAM
+        FDB     ZEROX
 ;
-        FCB     (NEGRAX-FOO) AND $FF    ;set RAM to negative one
-FOO     SET     NEGRAX
+;        FCB     (NEGRAX-FOO) AND $FF    ;set RAM to negative one
+        FDB     NEGRAX
 ;
-        FCB     (WIZIX-FOO) AND $FF     ;fade-in
-FOO     SET     WIZIX
+;        FCB     (WIZIX-FOO) AND $FF     ;fade-in
+        FDB     WIZIX
 ;
-        FCB     (WIZIX0-FOO) AND $FF    ;   secondary entry point
-FOO     SET     WIZIX0
+;        FCB     (WIZIX0-FOO) AND $FF    ;   secondary entry point
+        FDB     WIZIX0
 ;
-        FCB     (WIZOX-FOO) AND $FF    ;fade-out
-FOO     SET     WIZOX
+;        FCB     (WIZOX-FOO) AND $FF    ;fade-out
+        FDB     WIZOX
 ;
-        FCB     (PREPAX-FOO) AND $FF    ;"PREPARE!" msg on EXAMINE screen
-FOO     SET     PREPAX
+;        FCB     (PREPAX-FOO) AND $FF    ;"PREPARE!" msg on EXAMINE screen
+        FDB     PREPAX
 ;
-        FCB     (OBIRTX-FOO) AND $FF    ;object creation routine
-FOO     SET     OBIRTX
+;        FCB     (OBIRTX-FOO) AND $FF    ;object creation routine
+        FDB     OBIRTX
 ;
-        FCB     (OCBFIX-FOO) AND $FF    ;OCB filling routine
-FOO     SET     OCBFIX
+;        FCB     (OCBFIX-FOO) AND $FF    ;OCB filling routine
+        FDB     OCBFIX
 ;
-        FCB     (INIVUX-FOO) AND $FF    ;create initial view
-FOO     SET     INIVUX
+;        FCB     (INIVUX-FOO) AND $FF    ;create initial view
+        FDB     INIVUX
 ;
-        FCB     (NEWLVX-FOO) AND $FF    ;create a new level
-FOO     SET     NEWLVX
+;        FCB     (NEWLVX-FOO) AND $FF    ;create a new level
+        FDB     NEWLVX
 ;
-        FCB     (SOUNDI-FOO) AND $FF    ;   secondary entry point
-FOO     SET     SOUNDI
+;        FCB     (SOUNDI-FOO) AND $FF    ;   secondary entry point
+        FDB     SOUNDI
 ;
-        FCB     (SOUNDX-FOO) AND $FF    ;sound routines
-FOO     SET     SOUNDX
+;        FCB     (SOUNDX-FOO) AND $FF    ;sound routines
+        FDB     SOUNDX
 ;
 ;;;;;        END

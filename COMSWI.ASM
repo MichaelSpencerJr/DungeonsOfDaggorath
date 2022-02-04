@@ -19,20 +19,17 @@
 SWISER  ANDCC   #~(CC.I&$FF)    ;restore IRQ interrupts
 ;
         LDX     10,S            ;load return addr
-        LDA     ,X+             ;load parameter byte
+        LDB     ,X+             ;load parameter byte
         STX     10,S            ;update return addr
 ;
-        LDX     #SWIBEG         ;first entry in dispatch table
-        LDU     #SWITAB         ;offset table addr
-SSER10  LDB     ,U+             ;load next offset
+        LDX     #SWITAB         ;first entry in dispatch table
         ABX                     ;add to base addr
-        DECA                    ;decrement counter
-        BPL     SSER10          ;   not done yet
+        ABX                     ;add to base addr
+		ldx ,x				; fetch routine address
         STX     ,--S            ;stack dispatch addr
 ;
-        LDD     3,S             ;restore regs before dispatching
+        LDB     4,S             ;restore regs before dispatching
         LDX     6,S             ;   .
-        LDU     10,S            ;   .
         JSR     [,S++]          ;disatch to routine/exit
         RTI                     ;dismiss the interrupt
 
