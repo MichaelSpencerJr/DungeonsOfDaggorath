@@ -652,4 +652,6 @@ MM.END  EQU     *               ;last location of memory
 PDL     EQU     D0$BAS          ;where the push-down-list starts
 PD.LEN  EQU     D0$BAS-MM.END   ;length of push-down list
 ;
-;;;;;        END
+renderstrimm	macro noexpand
+		jsr putstrimm
+		endm

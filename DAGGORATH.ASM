@@ -79,7 +79,7 @@
 ;
 ;
         ;lwasm compatibility
-        pragma  nodollarlocal,6809
+        pragma  nodollarlocal,6809,cescapes
 
         ;Assembler listing output generally contains commented macro invocations
         ;followed by the expanded form of the called macro, which is then assembled.

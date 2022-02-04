@@ -166,29 +166,9 @@ CINI46  DEC     OBJCNT          ;one less object to create
         SWI                     ;clear the status line
         FCB     CLRSTS          ;   .
 ;
-        SWI                     ;from on the high...
-        FCB     OUTSTI          ;   .
-        FCB     %11111000       ;COPYRIGHT  DYNA MICRO  MCMLXXXII
-        FCB     %11011111       ;COPYRIGHT  DYNA MICRO  MCMLXXXII
-        FCB     %00001100       ;COPYRIGHT  DYNA MICRO  MCMLXXXII
-        FCB     %11001001       ;COPYRIGHT  DYNA MICRO  MCMLXXXII
-        FCB     %00100111       ;COPYRIGHT  DYNA MICRO  MCMLXXXII
-        FCB     %01000101       ;COPYRIGHT  DYNA MICRO  MCMLXXXII
-        FCB     %00000000       ;COPYRIGHT  DYNA MICRO  MCMLXXXII
-        FCB     %00000010       ;COPYRIGHT  DYNA MICRO  MCMLXXXII
-        FCB     %01100101       ;COPYRIGHT  DYNA MICRO  MCMLXXXII
-        FCB     %11000001       ;COPYRIGHT  DYNA MICRO  MCMLXXXII
-        FCB     %00000011       ;COPYRIGHT  DYNA MICRO  MCMLXXXII
-        FCB     %01010010       ;COPYRIGHT  DYNA MICRO  MCMLXXXII
-        FCB     %00111001       ;COPYRIGHT  DYNA MICRO  MCMLXXXII
-        FCB     %00111100       ;COPYRIGHT  DYNA MICRO  MCMLXXXII
-        FCB     %00000000       ;COPYRIGHT  DYNA MICRO  MCMLXXXII
-        FCB     %01101000       ;COPYRIGHT  DYNA MICRO  MCMLXXXII
-        FCB     %11011010       ;COPYRIGHT  DYNA MICRO  MCMLXXXII
-        FCB     %11001100       ;COPYRIGHT  DYNA MICRO  MCMLXXXII
-        FCB     %01100011       ;COPYRIGHT  DYNA MICRO  MCMLXXXII
-        FCB     %00001001       ;COPYRIGHT  DYNA MICRO  MCMLXXXII
-        FCB     %01001000       ;COPYRIGHT  DYNA MICRO  MCMLXXXII
+                                ;from on the high...
+		renderstrimm			; show copyright message
+		fcn 'COPYRIGHT  DYNA MICRO  MCMLXXXII'
 ;
 PSTS90  CLR     TXBFLG          ;restore standard i/o
         RTS                     ;go home
@@ -208,45 +188,11 @@ DEMO10  DEC     AUTFLG          ;indicate AUTOPLAY mode
         SWI                     ;(don't erase status line!)
         FCB     WIZIN0          ;   .
 ;
-        SWI                     ;welcome message (part I)
-        FCB     OUTSTI          ;   .
-        FCB     %10011111       ;^I DARE YE ENTER...^
-        FCB     %11010010       ;^I DARE YE ENTER...^
-        FCB     %00000010       ;^I DARE YE ENTER...^
-        FCB     %00000110       ;^I DARE YE ENTER...^
-        FCB     %01000101       ;^I DARE YE ENTER...^
-        FCB     %00000110       ;^I DARE YE ENTER...^
-        FCB     %01001010       ;^I DARE YE ENTER...^
-        FCB     %00000010       ;^I DARE YE ENTER...^
-        FCB     %10111010       ;^I DARE YE ENTER...^
-        FCB     %10000101       ;^I DARE YE ENTER...^
-        FCB     %10010111       ;^I DARE YE ENTER...^
-        FCB     %10111101       ;^I DARE YE ENTER...^
-        FCB     %11101111       ;^I DARE YE ENTER...^
-        FCB     %10000000       ;^I DARE YE ENTER...^
+                                ;welcome message (part I)
+                                ;welcome message (part II)
+		renderstrimm			; dare the player
+		fcn '\rI DARE YE ENTER...\r...THE DUNGEONS OF DAGGORATH!!!'
 ;
-        SWI                     ;welcome message (part II)
-        FCB     OUTSTI          ;   .
-        FCB     %11110111       ;...THE DUNGEONS OF DAGGORATH!!!
-        FCB     %10111101       ;...THE DUNGEONS OF DAGGORATH!!!
-        FCB     %11101010       ;...THA DUNGEONS OF DAGGORATH!!!
-        FCB     %00100000       ;...THE DUNGEONS OF DAGGORATH!!!
-        FCB     %10100000       ;...THE DUNGEONS OF DAGGORITH!!!
-        FCB     %00100101       ;...THE DUJGEONS OF DAGGORATH!!!
-        FCB     %01011100       ;...THE DUNGEONS OF DAGGORATH!!!
-        FCB     %01110010       ;...THE DUNGEONS OF DAGGORATH!!!
-        FCB     %10111101       ;...THE DUNGEONS OF DAGGORATH!!!
-        FCB     %11010011       ;...THE DUNGEONS OF DAGGORATH!!!
-        FCB     %00000011       ;...THE DUNGEONS OF DAGGORATH!!!
-        FCB     %11001100       ;...THE DUNGEONS OF DAGGORITH!!!
-        FCB     %00000010       ;...THE DUNGEONS OF DAGGORATH!!!
-        FCB     %00000100       ;...THE DUNGEONS OF DAGGORATH!!!
-        FCB     %11100111       ;...THE DUNGEONS OF DAGGORATH!!!
-        FCB     %01111100       ;...THE DUNGEONS OF DAGGORATH!!!
-        FCB     %10000011       ;...THE DUNGEONS OF DAGGORATH!!!
-        FCB     %01000100       ;...THE DUNGEONS OF DAGGORATH!!!
-        FCB     %01101111       ;...THE DUNGEONS OF DAGGORATH!!!
-        FCB     %01111011       ;...THE DUNGEONS OF DAGGORATH!!!
 
 
 

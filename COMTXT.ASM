@@ -19,6 +19,17 @@
 ;        XREF    SWCTAB,SPCTAB
 ;        PSCT
 ;
+; The putchr entry point renders a character which is already encoded as ASCII. It preserves all registers.
+rendercharascii	cmpa #8				; is it backspace?
+		beq TXTBS			; brif so
+		cmpa #13			; is it carriage return?
+		beq TXTCR			; brif so
+		cmpa #32			; is it non-printable?
+		blo render000			; brif so - treat as blank
+		bsr LCA17a			; go render actual character
+		leax 1,x			; move to next character position
+render000	rts
+;
 ;  TXTXXX: Character Handling Routines
 ;
 TXTXXX  CMPA    #I.BS           ;backspace? (left arrow key)
@@ -105,6 +116,8 @@ LSLD    LSLB                    ;   .
 
 
 
+LCA17a		pshs a,b,x,y,u			; save registers
+		bra LCA29g			; go render character
 ;
 ;  TXTDPB: Software Character Generator
 ;
@@ -113,10 +126,6 @@ LSLD    LSLB                    ;   .
 ;       U - Pointer to TXB
 ;
 TXTDPB  PSHS    A,B,X,Y,U       ;save regs
-
-skip2		macro noexpand
-		fcb $8c
-		endm
 
 		tsta				; is it space?
 		beq LCA29b			; brif so
@@ -130,19 +139,19 @@ skip2		macro noexpand
 		cmpa #$1e			; is it .?
 		beq LCA29f			; brif so
 		adda #128-32			; offset to special characters in font data
-		skip2				; go render the font data
+		fcb SKIP2				; go render the font data
 LCA29a		adda #$40			; adjust to letter area of font
-		skip2				; go render font data
+		fcb SKIP2				; go render font data
 LCA29b		lda #32				; code for space
-		skip2
+		fcb SKIP2
 LCA29c		lda #'!				; code for !
-		skip2
+		fcb SKIP2
 LCA29d		lda #'_				; code for _
-		skip2
+		fcb SKIP2
 LCA29e		lda #'?				; code for ?
-		skip2
+		fcb SKIP2
 LCA29f		lda #'.				; code for .
-		ldb #8				; 8 bytes per font entry
+LCA29g		ldb #8				; 8 bytes per font entry
 		mul				; now D is offset
 		addd #SWCTAB-(32*8)		; offset into table
 		tfr d,x				; put pointer somewhere useful
