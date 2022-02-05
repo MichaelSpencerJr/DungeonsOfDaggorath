@@ -117,14 +117,9 @@ WIZZES  PSHS    X,U             ;save regs
 PREPAX  JSR     EXAMIO          ;prepare to do i/o to EXAMINE screen
         LDD     #32*9+12        ;set cursor position
         STD     P.TXCUR,U       ;   .
-        SWI                     ;deliver the message
-        FCB     OUTSTI          ;   .
-        FCB     %00111100       ;PREPARE!
-        FCB     %00100100       ;PREPARE!
-        FCB     %01011000       ;PREPARE!
-        FCB     %00000110       ;PREPARE!
-        FCB     %01000101       ;PREPARE!
-        FCB     %11011000       ;PREPARE!
+		jsr putstrimm			; display the PREPARE! message
+		fcn 'PREPARE!'
+;		renderstrimmp			; display the PREPARE! message
 ;
         CLR     TXBFLG          ;restore standard i/o
         DEC     UPDATE          ;request screen update

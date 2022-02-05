@@ -29,6 +29,7 @@ error_hook	ldx error_handler		; is there a handler registered?
 error_hook000	lds error_stack			; reset the stack to a known state
 		bsr restore_dp			; reset the direct page
 		bsr error_cleartrap		; clear the error trap on error
+		jsr slowclock			; force slow clock mode
 		jmp ,x				; transfer control to the handler
 ; This is the routine that installs a handler and the cleanup routine.
 error_settrap	stx error_handler		; set the handler
@@ -49,6 +50,7 @@ file_openi	pshs d,x,y,u			; save registers
 		bsr set_basdp			; set direct page for Basic call
 		jsr [hook_openi]		; go call the file open handler in ROM
 		bsr restore_dp			; restore direct page
+		jsr slowclock			; force slow down
 		clra				; set Z for success
 		bsr error_cleartrap		; clear the error trap
 		puls d,x,y,u,pc			; restore registers and return
@@ -62,6 +64,7 @@ file_openo	pshs d,x,y,u			; save registers
 		bsr set_basdp			; set direct page for Basic call
 		jsr [hook_openo]		; go call the file open handler in ROM
 		bsr restore_dp			; restore direct page
+		jsr slowclock			; force slow down
 		clra				; set Z for success
 		bsr error_cleartrap		; clear the error trap
 		puls d,x,y,u,pc			; restore registers and return
@@ -85,6 +88,7 @@ file_close	ldx #file_openerr		; use the same generic handler for failure as open
 		bsr error_settrap		; register error handler
 		bsr set_basdp			; set up DP correctly
 		jsr $A426			; call the "close one file" handler
+		jsr slowclock			; force slow down
 		clra				; set Z for success
 		bsr error_cleartrap		; clear the error trap
 		bra restore_dp			; restore DP and return
@@ -96,8 +100,9 @@ file_write	pshs b,x,y,u			; save registers
 		bsr set_basdp			; set up DP properly
 		jsr $A282			; write byte
 		bsr restore_dp			; restore direct page
+		jsr slowclock			; force slow down
 		clrb				; reset C for no error
-		bsr error_cleartrap		; clear the error trap
+		jsr error_cleartrap		; clear the error trap
 		puls b,x,y,u,pc			; restore registers and return
 ; This routine reads a byte from the currently open file and returns it in A.
 ; In the event of an error, return C set and close the file. Otherwise, return C clear.
@@ -109,6 +114,7 @@ file_read	pshs d,x,y,u			; save registers
 		jsr $A176			; go read a character
 		sta ,s				; save return value
 		bsr restore_dp			; reset DP
+		jsr slowclock			; force slow down
 		clrb				; reset C for no error
 		puls d,x,y,u,pc			; restore registers and return
 ; This is the IO error handler for file I/O

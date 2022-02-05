@@ -33,17 +33,8 @@ EXAMIN  BSR     EXAMIO          ;prepare for i/o to EXAMINE screen
 ;
         LDD     #10             ;set cursor position
         STD     P.TXCUR,U       ;   .
-        SWI                     ;header
-        FCB     OUTSTI          ;   .
-        FCB     %01100010       ;IN THIS ROOM^
-        FCB     %01011100       ;IN THIS ROOM^
-        FCB     %00001010       ;IN THIS ROOM^
-        FCB     %00100001       ;IN THIS ROOM^
-        FCB     %00110011       ;IN THIS ROOM^
-        FCB     %00000100       ;IN THIS ROOM^
-        FCB     %10011110       ;IN THIS ROOM^
-        FCB     %11110110       ;IN THIS ROOM^
-        FCB     %11111100       ;IN THIS ROOM^
+		jsr putstrimm
+		fcn 'IN THIS ROOM\r'
 ;
 ;  Check for Creatures
 ;
@@ -54,16 +45,8 @@ EXAMIN  BSR     EXAMIO          ;prepare for i/o to EXAMINE screen
         LDX     P.TXCUR,U       ;position cursor
         LEAX    11,X            ;   .
         STX     P.TXCUR,U       ;   .
-        SWI                     ;indicate bad guy present
-        FCB     OUTSTI          ;   .
-        FCB     %01010110       ;!CREATURE!^
-        FCB     %11000111       ;!CREATURE!^
-        FCB     %00100010       ;!CREATURE!^
-        FCB     %10000110       ;!CREATURE!^
-        FCB     %10010101       ;!CREATURE!^
-        FCB     %10010001       ;!CREATURE!^
-        FCB     %01110111       ;!CREATURE!^
-        FCB     %11110000       ;!CREATURE!^
+		jsr putstrimm
+		fcn '!CREATURE!\r'
 
 
 
@@ -97,15 +80,8 @@ EXAM26  SWI                     ;   .
         LDX     P.TXCUR,U       ;position cursor
         LEAX    12,X            ;   .
         STX     P.TXCUR,U       ;   .
-        SWI                     ;header
-        FCB     OUTSTI          ;   .
-        FCB     %01000000       ;BACKPACK^
-        FCB     %10000010       ;BACKPACK^
-        FCB     %00110101       ;BACKPACK^
-        FCB     %11000000       ;BACKPACK^
-        FCB     %00100011       ;BACKPACK^
-        FCB     %01011111       ;BACKPACK^
-        FCB     %11000000       ;BACKPACK^
+		jsr putstrimm
+		fcn 'BACKPACK\r'
 ;
 ;  Display Bag Contents        
 ;

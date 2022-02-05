@@ -88,11 +88,8 @@ POBJ99  RTS                     ;return as a winner!
 ;  PARERR: Tell user the bad news
 ;
 PARERR  LEAS    2,S             ;remove return addr
-CMDERR  SWI
-        FCB     OUTSTI
-        FCB     %00010111       ;???
-        FCB     %01111011       ;???
-        FCB     %11010000       ;???
+CMDERR  jsr putstrimm			; display "???" for unknown command
+		fcn '???'
 ;
         RTS
 

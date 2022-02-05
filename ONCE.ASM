@@ -6,6 +6,12 @@
 ;  ONCE: Once-only Initialization
 ;
         ORG     PROGLOAD
+; This routine forces the clock rate to the regular "slow" rate. The reason for the two bits is to make sure it gets
+; slowed down on both Coco3 and Coco1/2. It will also properly stop "double speed" mode on a Coco1/2. According to
+; the SAM data sheet, this is the correct sequence to force full slowdown.
+slowclock	sta $FFD8			; slow the clock rate down
+		sta $FFD6
+		rts
 ONCE    EQU     *               ;in the beginning...
 ;
 ;  DEMO/GAME Start-Up
@@ -25,6 +31,8 @@ GAME    LDU     #GAME10         ;initialize RAM/fall into COMINI
 ;
 COMINI  EQU     *               ;--- start of procedure COMINI
         LDS     #PDL            ;set stack pointer
+		bsr slowclock			; force slow speed mode
+		clr >RSTFLG			; force a cold start on RESET
 ;  Program PIA$0
 ;
 		ldd #$34fc			; initializers for the PIA
@@ -167,7 +175,7 @@ CINI46  DEC     OBJCNT          ;one less object to create
         FCB     CLRSTS          ;   .
 ;
                                 ;from on the high...
-		renderstrimm			; show copyright message
+		jsr putstrimm			; show copyright message
 		fcn '\x841982 Dyna Micro, \x842015 LWE Inc' ; (\x84 is a copyright sign)
 ;
 PSTS90  CLR     TXBFLG          ;restore standard i/o
@@ -190,7 +198,7 @@ DEMO10  DEC     AUTFLG          ;indicate AUTOPLAY mode
 ;
                                 ;welcome message (part I)
                                 ;welcome message (part II)
-		renderstrimm			; dare the player
+		jsr putstrimm			; dare the player
 		fcn '\rI DARE YE ENTER...\r...THE DUNGEONS OF DAGGORATH!!!'
 ;
 
