@@ -27,7 +27,7 @@ PIATAP  ldd #$34fe				; initializer for side A
 		sta PIA$1+1			; set back to data mode, no interrupts, cassette off
 		ldb #2				; set RS232 to "marking"
 		stb PIA$1
-		ldd #$3cf8			; initializer for side B
+		ldd #$34f8			; initializer for side B
 		clr PIA$1+P.PICRB		; set direction mode for side B
 		stb PIA$1+P.PIIOB		; set direction properly, disable sound, one bit sound as input
 		sta PIA$1+P.PICRB		; set back to data mode, no interrupts, sound on
