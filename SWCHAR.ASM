@@ -929,6 +929,15 @@ SPCTAB  EQU     *
         FCB     %01000000       ; char code 131 - right part of expanded heart
         FCB     %00000000       ; char code 131 - right part of expanded heart
 ;
+        FCB     %01111000       ; char code 132 - copyright symbol
+        FCB     %10000100       ; char code 132 - copyright symbol
+        FCB     %10110100       ; char code 132 - copyright symbol
+        FCB     %10100100       ; char code 132 - copyright symbol
+        FCB     %10110100       ; char code 132 - copyright symbol
+        FCB     %10000100       ; char code 132 - copyright symbol
+        FCB     %01111000       ; char code 132 - copyright symbol
+        FCB     %00000000       ; char code 132 - copyright symbol
+;
 ;;;;;        END
 ;
 ;

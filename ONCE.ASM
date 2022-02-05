@@ -168,7 +168,7 @@ CINI46  DEC     OBJCNT          ;one less object to create
 ;
                                 ;from on the high...
 		renderstrimm			; show copyright message
-		fcn 'COPYRIGHT  DYNA MICRO  MCMLXXXII'
+		fcn '\x841982 Dyna Micro, \x842015 LWE Inc' ; (\x84 is a copyright sign)
 ;
 PSTS90  CLR     TXBFLG          ;restore standard i/o
         RTS                     ;go home
