@@ -34,7 +34,7 @@ cmd_zload000	tstb				; recoverable error?
 FILNAM  LDX     #TOKEN          ;initialize TOKEN buffer
         LEAU    32,X            ;negative ones
         SWI                     ;   .
-        FCB     NEGRAM          ;   .
+        FCB     ZERO            ;   .
         JMP     GETTOK          ;grab the next token/exit
 ;
 ;  PZSAVE: Game Restore Function

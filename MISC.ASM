@@ -3,12 +3,11 @@
 ;  PROMPT: Prompt the Human for Input
 ;
 PROMPX  LDX     #M$PROM1        ;y'ungry?
-        SWI                     ;m'ungry...
-        FCB     OUTSTR          ;   .
+        jsr     putstr          ;m'ungry...
         RTS                     ;t'seet...
 ;
-M$PROM1 FCB     I.CR,I.DOT
-M$CURS  FCB     I.BAR,I.BS,$FF
+M$PROM1 fcb 13,'.			; unpacked string CR PERIOD UNDERSCORE BS (including following)
+M$CURS  fcb '_,8,0			; UNDERSCORE BS
 ;
 ;
 ;  WAITX: Delay Processing 1.5 Second
@@ -119,7 +118,6 @@ PREPAX  JSR     EXAMIO          ;prepare to do i/o to EXAMINE screen
         STD     P.TXCUR,U       ;   .
 		jsr putstrimm			; display the PREPARE! message
 		fcn 'PREPARE!'
-;		renderstrimmp			; display the PREPARE! message
 ;
         CLR     TXBFLG          ;restore standard i/o
         DEC     UPDATE          ;request screen update

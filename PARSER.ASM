@@ -1,41 +1,25 @@
 ;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 ;  P A R S I N G   R O U T I N E S
 ;!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-;
-;  GETTOK: Return the next token in LINBUF
-;
-;  Inputs:
-;       LINPTR - where to start search
-;
-;  Returns:
-;       LINPTR - poniting past token
-;       TOKEN  - token terminated by a ($FF)
-;       N - condition code set if no token found
-;
-GETTOK  PSHS    A,X,U           ;save some regs
-        LDX     LINPTR          ;load line buffer pointer
-        LDU     #TOKEN          ;load token buffer base addr
-;
-;  Eat leading spaces
-;
-GTOK10  LDA     ,X+             ;get next input char
-        BEQ     GTOK10          ;   eat leading spaces
-        BRA     GTOK22          ;drop into loop
-;
-;  Copy non-spaces to TOKEN
-;
-GTOK20  LDA     ,X+             ;get input string char
-GTOK22  BLE     GTOK30          ;   ($FF) or space means we are done
-        STA     ,U+             ;otherwise copy char to token buffer
-        CMPU    #TOKEND         ;insure token buffer is not overrun
-        BLO     GTOK20          ;   .
-;
-;  Terminate token with ($FF)
-;
-GTOK30  LDA     #$FF            ;terminator
-        STA     ,U+             ;   .
-        STX     LINPTR          ;update pointer
-        TST     TOKEN           ;return N set if no token
+
+; Parse a word from the command line and place it in TOKEN. Set Z if no word.
+GETTOK	pshs a,x,u			; save registers
+		ldu LINPTR			; get input line location
+		ldx #TOKEN			; point to word buffer
+GTOK10	lda ,u+				; get input character
+		cmpa #32			; is it space?
+		beq GTOK10		; brif so
+		bra GTOK22		; go strip word off line
+GTOK20	lda ,u+				; fetch input character
+GTOK22	beq GTOK30		; brif end of buffer
+		cmpa #32			; is it space?
+		beq GTOK30		; brif so
+		sta ,x+				; save characte rin word buffer
+		cmpx #TOKEND-1			; end of buffer?
+		blo GTOK20		; brif not - fetch another character
+GTOK30	clr ,x				; flag end of word
+		stu LINPTR			; save new location in input buffer
+		tst TOKEN			; set Z if no word
         PULS    A,X,U,PC        ;restore regs/go home
 
 
@@ -61,7 +45,7 @@ GTOK30  LDA     #$FF            ;terminator
 ;
 PAROBJ  CLR     SPEFLG          ;assume generic form
         LDX     #GENTAB         ;generic token search
-        BSR     PARSER          ;   .
+        bsr PARSER			; look up word in object type list
         BMI     POBJ10          ;   search failure
         BEQ     PARERR          ;   null tokens are illegal
         STD     OBJTYP          ;store parms
@@ -71,12 +55,12 @@ PAROBJ  CLR     SPEFLG          ;assume generic form
 ;
 POBJ10  DEC     SPEFLG          ;must be specific form
         LDX     #ADJTAB         ;search for an adjective
-        BSR     PARSE0          ;   .
+        bsr PARSE0		; look up word in object type list
         BLE     PARERR          ;   null/illegal tokens not allowed
         STD     OBJTYP          ;save adjective parms
 ;
         LDX     #GENTAB         ;search for generic tokens
-        BSR     PARSER          ;   .
+        bsr PARSER			; look up keyword
         BLE     PARERR          ;   null/illegal tokens
         CMPB    OBJCLS          ;matching class?
         BNE     PARERR          ;   nope - loser
@@ -95,92 +79,52 @@ CMDERR  jsr putstrimm			; display "???" for unknown command
 
 
 
-;
-;  PARSER: Get and Classify the next TOKEN
-;
-;  Inputs:
-;       X - pointer to token table
-;       LINPTR - Line Buffer Pointer
-;  Returns:
-;       A - Token type
-;       B - Token class
-;       TOKEN - TOken
-;       LINPTR - updated past last token
-;       N - condition code set if search failure
-;
-PARSE0  PSHS    A,B,X,Y,U       ;secondary entry ponit
-        CLRA                    ;   .
-        BRA     PARS02          ;   .
-;
-PARSER  PSHS    A,B,X,Y,U       ;save some regs
-        CLRA                    ;assume next token is null
-        CLRB                    ;   .
-        BSR     GETTOK          ;get the next token
-        BMI     PARS92          ;   token is null
-;
-PARS02  CLR     PARFLG          ;reset "seen match" flag
-        CLR     FULFLG          ;reset "full word" match flag
-        LDB     ,X+             ;load the number of tokens
-        STB     PARCNT          ;store as loop count
-;
-;  Compare TOKEN against next command
-;
-PARS10  LDU     #TOKEN          ;reset token byte pointer
-        SWI                     ;expand 5-bit string
-        FCB     EXPAND          ;   .
-        LDY     #STRING+2       ;load command byte pointer
-PARS12  LDB     ,U+             ;load next token byte
-        BMI     PARS20          ;   winner - end of token
-        CMPB    ,Y+             ;token match command?
-        BNE     PARS30          ;   nope - loser
-        TST     ,Y              ;reach end of command?
-        BPL     PARS12          ;   nope - continue comparisons
-        TST     ,U              ;end of token?
-        BPL     PARS30          ;   nope - loser
-        DEC     FULFLG          ;end token/command - full match
-;
-;  We have a Winner!
-;
-PARS20  TST     PARFLG          ;have we already seen a match?
-        BNE     PARS90          ;   can't have two matches!
-        INC     PARFLG          ;flag successful command match
-        LDB     STRING+1        ;load token class
-        STD     ,S              ;store return values (2022 n.b. original was 0,S)
+; Look up word at wordbuff in keyword list.
+PARSE0	pshs a,b,x,y,u			; save registers
+		clra				; initialize keyword entry
+		bra PARS02		; go look up keyword
+; Look up the word at the start of the line  against the keyword list in X. Each keyword list has a prefix byte containing
+; additional flags, etc.
+PARSER	pshs a,b,x,y,u			; save registers
+		clra				; initialize keyword number
+		clrb				; flag for no match
+		bsr GETTOK			; fetch a word from input
+		beq PARS70		; brif no word - return Z set
+PARS02	clr PARFLG			; flag no match found
+		clr FULFLG			; flag if match is exact
+		ldb ,x+				; get number of keywords in list
+		stb PARCNT			; save interation count
+PARS10	leay 1,x			; point to start of this keyword
+		ldu #TOKEN			; point to start of parsed word
+PARS20	ldb ,u+				; fetch input character
+		beq PARS40		; brif end of input
+		cmpb ,y+			; does it match?	
+		bne PARS50		; brif it doesn't match
+		tst ,y				; end of keyword?
+		bne PARS20		; brif not
+		tst ,u				; end of word?
+		bne PARS50		; brif not - no match, keep looking
+PARS30	dec FULFLG			; we had an exact match
+PARS40	tst PARFLG			; do we already have a match?
+		bne PARS60		; brif so - return no match
+		inc PARFLG			; flag match found
+		ldb ,x				; fetch type code
+		std ,s				; save code type and return value
+PARS50	inca				; bump keyword number
+		dec PARCNT			; are we done iterating?
+		bne PARS90		; brif not
+		tst PARFLG			; do we have a match?
+		bne PARS80		; brif so
+PARS60	ldd NEGONE			; load error flag
+PARS70	std ,s				; save return value
+PARS80	puls a,b,x,y,u,pc		; return results
+PARS90	leax 1,x			; move past flag byte
+PARS95	ldb ,x+				; fetch character in keyword
+		bne PARS95		; brif not end of keyword
+		bra PARS10		; go check next word
 
-
-
-;
-;  Advance to next command
-;
-PARS30  INCA                    ;bump command counter
-        DEC     PARCNT          ;decrement loop counter
-        BNE     PARS10          ;   loop until table exhausted
-;
-;  Finish up and go home
-;
-        TST     PARFLG          ;did we match a command?
-        BNE     PARS99          ;   yes - go home a winner
-PARS90  LDD     NEGONE          ;loser...
-PARS92  STD     ,S              ;   . (2022 n.b. original was 0,S)
-PARS99  PULS    A,B,X,Y,U,PC    ;restore regs/go home
-
-
-
-;
-;  PARHND:  Parse LEFT or RIGHT hand
-;
-;  Inputs:
-;       LINPTR
-;  Returns:
-;       A - Token Type
-;       B - Token Class
-;       U - #PLHAND or #PRHAND
-;       TOKEN - token
-;       LINPTR - updated past last token
-;       N - condition code set if parse fails
-;
-PARHND  LDX     #DIRTAB         ;directions
-        BSR     PARSER          ;get the next token
+PARHND		ldx #DIRTAB			; point to direction keywords
+		bsr PARSER			; evaluate the specified keyword
         BLE     PARERR          ;   null/illegal token
         LDU     #PRHAND         ;right hand
         CMPA    #T.RT           ;   .

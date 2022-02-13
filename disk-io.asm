@@ -242,8 +242,7 @@ file_writew000	rts				; return to caller
 loadsave_setfn	ldb #8				; 8 characters max for file name
 		ldx #DNAMBF			; point to file name location
 loadsave_setfn0	lda ,u+				; fetch character from file name
-		bmi loadsave_setfn1		; brif end of specified name
-		adda #$40			; adjust back to ASCII range
+		beq loadsave_setfn1		; brif end of specified name
 		sta ,x+				; put character in buffer
 		decb				; have we reached the end of the buffer?
 		bne loadsave_setfn0		; brif not

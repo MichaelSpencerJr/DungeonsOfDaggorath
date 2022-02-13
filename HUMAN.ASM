@@ -20,30 +20,7 @@ PLAY10  JSR     KBDGET          ;get the next char
 ;
         TST     FAINT           ;did we faint?
         BNE     PLAY10          ;   yes - just eat chars
-;
-;  Convert from ASCII to Internal Codes
-;
-        CMPA    #C.SP           ;space?
-        BEQ     PLAY14          ;   yes
-;
-        LDB     #I.CR           ;assume carriage return
-        CMPA    #C.CR           ;   .
-        BEQ     PLAY12          ;   was a carriage return
-;
-        LDB     #I.BS           ;assume backspace
-        CMPA    #C.BS           ;   .
-        BEQ     PLAY12          ;   was a backspace
-;
-        CLRB                    ;non-alpha becomes a space
-        CMPA    #'A'            ;uppercase-A
-        BLO     PLAY12          ;   non-alpha
-        CMPA    #'Z'            ;uppercase-Z
-        BLS     PLAY14          ;   was alpha
-;
-PLAY12  TFR     B,A             ;replace original character
-        FCB     SKIP2           ;   (use full 8 bits)
-PLAY14  ANDA    #$1F            ;use lower 5-bits
-        BSR     HUMAN           ;process the char
+        bsr HUMAN			; go process input character
         BRA     PLAY10          ;loop
 
 
@@ -63,26 +40,22 @@ PLAY20  LDY     AUTPTR          ;load ptr to next command
 ;
 ;  Feed next autoplay command to HUMAN
 ;
-PLAY30  LDX     ,Y++            ;load next token string ptr
-        LDU     #OBJSTR+1       ;buffer addr
-        SWI                     ;expand the 5-bit string
-        FCB     EXPAN0          ;   .
-        LEAU    1,U             ;advance past class byte
+PLAY30  LDU     ,Y++            ;load next token string ptr
         SWI                     ;delay between words
         FCB     WAIT            ;   .
         FCB     SKIP2           ;   .
 ;
 PLAY40  BSR     HUMAN           ;process the char
         LDA     ,U+             ;load next char
-        BPL     PLAY40          ;   valid chars goto HUMAN
+        BNE     PLAY40          ;   valid chars goto HUMAN
 ;
-        CLRA                    ;terminate tokens with spaces
+        LDA     #C.SP           ;terminate tokens with spaces
         BSR     HUMAN           ;   .
 ;
         DECB                    ;decrement token count
         BNE     PLAY30          ;   until no more tokens
 ;
-PLAY50  LDA     #I.CR           ;terminate commands with return
+PLAY50  LDA     #C.CR           ;terminate commands with return
         BSR     HUMAN           ;   .
         STY     AUTPTR          ;update ptr
 ;
@@ -109,7 +82,7 @@ PLAY99  SCHED$  1,Q.JIF         ;once per jiffy
 ;       routine will atempt to dispatch to the proper command
 ;       handler based on the first TOKEN in the line buffer.
 ;
-HUMAN   PSHS    A,B,X,Y,U       ;save regs
+HUMAN   PSHS    A,B,X,Y,U       ;save regs LD24C
 ;
 ;  Check if we are displaying the map
 ;
@@ -123,19 +96,23 @@ HMAN10  TST     HEARTF          ;are we in map mode?
 ;  Process Characters
 ;
 HMAN20  LDU     LINPTR          ;load line buffer ptr
-        CMPA    #I.CR           ;check for line terminator
+        CMPA    #C.CR           ;check for line terminator
         BEQ     HMAN30          ;   .
-        CMPA    #I.BS           ;check for character delete
+        CMPA    #C.BS           ;check for character delete
         BEQ     HMAN40          ;   .
 ;
 ;  Buffer Normal Chars
 ;
-        SWI                     ;echo char to the screen
-        FCB     OUTCHR          ;   .
+		cmpa #C.SP			; is it control character?
+		blo HMAN99			; brif so - ignore it
+		cmpa #C.DEL-1			; above ascii?
+		bhi HMAN99			; brif so - ignore it
+		jsr putchr			; render the character
+
+
         STA     ,U+             ;buffer char and advance ptr
         LDX     #M$CURS         ;print the cursor
-        SWI                     ;   .
-        FCB     OUTSTR          ;   .
+        jsr     putstr          ;go render the cursor
         CMPU    #LINEND         ;insure against buffer overruns
         BNE     HMAN99          ;   buffer still has room
 
@@ -144,10 +121,9 @@ HMAN20  LDU     LINPTR          ;load line buffer ptr
 ;
 ;  Process Carriage Returns
 ;
-HMAN30  CLRA                    ;erase old cursor
-        SWI                     ;   .
-        FCB     OUTCHR          ;   .
-        LDD     NEGONE          ;terminate buffer
+HMAN30  lda     #C.SP           ;erase old cursor
+        jsr     putchr          ;   .
+        LDD     BIGZER          ;terminate buffer
         STD     ,U++            ;   .
         LDU     #LINBUF         ;reset line buffer ptr for parsing
         STU     LINPTR          ;   .
@@ -159,8 +135,7 @@ HMAN40  CMPU    #LINBUF         ;check buffer boundary
         BEQ     HMAN99          ;   .
         LEAU    -1,U            ;decrement ptr
         LDX     #M$ERAS         ;print <BS><SP><BS>
-        SWI                     ;   .
-        FCB     OUTSTR          ;   .
+        jsr     putstr          ;   .
         BRA     HMAN99          ;loop for more
 ;
 M$ERAS  FCB     I.SP,I.BS,I.BS,I.BAR,I.BS,$FF
@@ -187,7 +162,7 @@ HMAN70  LDU     #LINBUF         ;reset line buffer ptr
         SWI                     ;prompt the human
         FCB     PROMPT          ;   .
 ;
-HMAN99  STU     LINPTR          ;update the line ptr
+HMAN99  STU     LINPTR          ;update the line ptr 
         PULS    A,B,X,Y,U,PC    ;restore regs/exit
 ;
 ;;;;;        END

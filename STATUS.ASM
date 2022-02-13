@@ -17,8 +17,7 @@ STATUX  LDU     #TXTSTS         ;i/o to status line
         STD     P.TXCUR,U       ;home the cursor
         LDX     PLHAND          ;display what left hand is holding
         BSR     OBJNAM          ;   .
-        SWI
-        FCB     OUTSTR          ;print the string
+        jsr     putstr          ;print the string
 ;
 ;  Right hand
 ;
@@ -34,11 +33,10 @@ STATUX  LDU     #TXTSTS         ;i/o to status line
         LDD     #33             ;count backwards
 STAT10  DECB                    ;decrement
         TST     ,Y+             ;look for end of string
-        BPL     STAT10          ;not found
+        bne     STAT10          ;not found
 ;
         STD     P.TXCUR,U       ;position cursor
-        SWI
-        FCB     OUTSTR          ;print the string
+        jsr     putstr          ;print the string
 ;
         CLR     TXBFLG          ;resume standard i/o
         RTS                     ;done
@@ -53,9 +51,8 @@ STAT10  DECB                    ;decrement
 ;       U - TXB pointer
 SPACES  PSHS    A,B             ;save regs
         STD     P.TXCUR,U       ;position cursor
-        LDD     #(I.SP*256)|15       ;space,,15
-SPACE1  SWI
-        FCB     OUTCHR          ;output the char
+        LDD     #C.SP*256+15    ;space,,15
+SPACE1  jsr     putchr          ;output the char
         DECB
         BNE     SPACE1          ;LOOP
         PULS    A,B,PC          ;restore regs
@@ -90,7 +87,8 @@ ONAM10  LDU     #TOKEN          ;buffer addr
         LDX     #ADJTAB+1       ;packed strings
         BSR     COPY$           ;copy to buffer
 ;
-        CLR     -1,U            ;use space as separator
+		lda #C.SP			; code for space
+		sta -1,u			; make a space after adjective
 ;
 ;  Copy  <generic>  to buffer
 ;
@@ -108,20 +106,23 @@ ONAM99  PULS    A,B,Y,U,PC      ;EXIT
 ;  COPY$: Copy String from Packed Array to Buffer
 ;
 COPY$   PSHS    A,X             ;save regs
-COPY10  SWI
-        FCB     EXPAND          ;expand the 5-bit string
-        DECA                    ;is this the string we want?
-        BPL     COPY10          ;   nope
-        LDX     #STRING+2       ;load string addr
+COPY10  DECA                    ;is this the string we want?
+        bmi     COPY18          ; brif so
+        leax 1,x			; move past object code
+COPY15  	ldb ,x+				; are we at the end of the string?        
+		bne COPY15			; brif not
+		bra COPY10			; go see if we're there yet
+COPY18		leax 1,x			; move past object code
+
 ;
 ;  Copy string to buffer
 ;
 COPY20  LDA     ,X+             ;load next char
         STA     ,U+             ;copy to destination
-        BPL     COPY20          ;loop
+        BNE     COPY20          ;loop
 ;
         PULS    A,X,PC          ;exit
 ;
-M$EMPT  FCB     $05,$0D,$10,$14,$19,$FF ;'EMPTY'
+M$EMPT  fcn 'EMPTY'
 ;
 ;;;;;        END

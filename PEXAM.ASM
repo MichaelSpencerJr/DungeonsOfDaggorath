@@ -69,9 +69,8 @@ EXAM20  TST     NEWLIN          ;check new line flag
         BEQ     EXAM24          ;   .
         BSR     PCRLF           ;force new line
 ;
-EXAM24  LDD     #(I.EXCL*256)+32        ;I.EXCL,,32
-EXAM26  SWI                     ;   .
-        FCB     OUTCHR          ;   .
+EXAM24  LDD     #'!'*256+$20    ;I.EXCL,,32
+EXAM26  jsr     putchr          ;   .
         DECB                    ;   .
         BNE     EXAM26          ;   .
 ;
@@ -106,9 +105,8 @@ EXAM99  CLR     TXBFLG          ;restore standard i/o
 ;
 ;  PCRLF: Print Carriage Return/Linefeed
 ;
-PCRLF   LDA     #I.CR           ;print carriage return
-        SWI                     ;   .
-        FCB     OUTCHR          ;   .
+PCRLF   LDA     #C.CR           ;print carriage return
+        jsr     putchr          ;   .
         CLR     NEWLIN          ;reset flag
         RTS
 ;
@@ -116,8 +114,7 @@ PCRLF   LDA     #I.CR           ;print carriage return
 ;
 PRTOBJ  PSHS    A,B,X           ;save regs
         JSR     OBJNAM          ;determine object name
-        SWI                     ;print object name
-        FCB     OUTSTR          ;   .
+        jsr     putstr          ;   .
 ;
         LDA     VDGINV          ;insure highlighting is off
         STA     P.TXINV,U       ;   .

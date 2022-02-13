@@ -91,7 +91,8 @@ UFL300  LDX     PPOW            ;cause 80% damage
         ADDD    PDAM            ;   .
 UFL310  STD     PDAM            ;   .
 ;
-UFL900  LDB     #T.FLA4         ;now empty the flask
+;UFL900  LDB     #T.FLA4         ;now empty the flask
+UFL900  LDB     #T.TOR5-1         ;now empty the flask FIXME
         STB     P.OCTYP,U       ;   .
         CLR     P.OCREV,U       ;empty flasks are always revealed
         SWI
