@@ -41,10 +41,10 @@ LADDER  FCB     24,116          ;upper left corner
         FCB     128,140         ;lower right corner
         FCB     V$NEW
 ;
-;;;;;;;;;FIXME
-;        FCB     28,116          ;1st rung
-;        FCB     28,140
-;        FCB     V$NEW
+
+        FCB     28,116          ;1st rung
+        FCB     28,140
+        FCB     V$NEW
 ;
         FCB     40,116          ;2nd rung
         FCB     40,140
