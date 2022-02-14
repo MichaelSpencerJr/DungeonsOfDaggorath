@@ -203,8 +203,7 @@ FOO     SET     0
 
         XDEF    T.RN20,M$RN20,GOLD,T.RIN0
 ;
-;        XDEF    T.FLA4,M$FLA4,EMPTY,T.FLA0  FIXME
-FOO     SET     FOO+1
+        XDEF    T.FLA4,M$FLA4,EMPTY,T.FLA0
 ;
         XDEF    T.TOR5,M$TOR5,DEAD,T.TOR0
 ;
