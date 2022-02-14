@@ -138,7 +138,7 @@ HMAN40  CMPU    #LINBUF         ;check buffer boundary
         jsr     putstr          ;   .
         BRA     HMAN99          ;loop for more
 ;
-M$ERAS  FCB     I.SP,I.BS,I.BS,I.BAR,I.BS,$FF
+M$ERAS  FCB     C.SP,C.BS,C.BS,'_',C.BS,C.NUL
 ;
 ;  Dispatch to Proper Routine
 ;
