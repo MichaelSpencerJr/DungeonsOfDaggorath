@@ -544,6 +544,7 @@ TXBFLG  RMB     1               ;standard/non-standard i/o flag
 ;  LOAD/SAVE Cassette Function Flags
 ;
 ZFLAG   RMB     1               ;load/save (-1/1) flag
+PAUSED  RMB     1               ; nonzero = game paused
 ;
 ;  SCHEDuler RAM
 ;

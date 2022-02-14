@@ -142,7 +142,9 @@ M$ERAS  FCB     C.SP,C.BS,C.BS,'_',C.BS,C.NUL
 ;
 ;  Dispatch to Proper Routine
 ;
-HMAN50  LDX     #CMDTAB         ;primary commands
+HMAN50  TST     PAUSED          ;are we paused?
+        LBNE    pausemodecmd    ;brif so - go handle pause mode
+        LDX     #CMDTAB         ;primary commands
         JSR     PARSER          ;get the next token
         BEQ     HMAN70          ;   null token
         BPL     HMAN60          ;   legal command

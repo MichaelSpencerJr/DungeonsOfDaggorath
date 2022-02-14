@@ -41,11 +41,13 @@ TDLY10  LEAX    -1,X            ;   .
         RTS                     ;bye
 
 
-
+SCHSKP  JSR     PLAYER          ;skip scheduler body and process keyboard, fall back into scheduler
 ;
 ;  SCHED: The "Merry-Go-Round"
 ;
-SCHED   LDU     #SCDQUE         ;start at queue head
+SCHED   TST     PAUSED          ;are we paused?
+        BNE     SCHSKP
+        LDU     #SCDQUE         ;start at queue head
         CLR     RSTART          ;reset "restart" flag
 SCHED0  TFR     U,Y             ;curr TCB becomes prev TCB
 ;
