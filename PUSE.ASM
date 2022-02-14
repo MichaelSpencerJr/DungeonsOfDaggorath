@@ -74,7 +74,9 @@ USEEND  EQU     *
 ;
 UFL100  LDD     #1000           ;increase power by 1000 pts
         ADDD    PPOW            ;   .
-        STD     PPOW            ;   .
+		bpl UFL110			; brif not overflow
+		ldd #$7FFF			; cap player power
+UFL110		std PPOW			; save new power value
         BRA     UFL900          ;   .
 ;
 ;  Soma Flask (Healing)
