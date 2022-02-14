@@ -65,6 +65,7 @@ T.GRAM  SET     0
 ;
         XDEF    T.ZSAV,M$ZSAV,ZSAVE,T.GRAM
 
+        XDEF    T.ZPAU,M$ZPAU,ZPAUSE,T.GRAM
 
 
 ;

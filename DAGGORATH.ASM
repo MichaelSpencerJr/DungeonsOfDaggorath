@@ -136,7 +136,12 @@
         INCLUDE KSK.ASM          ;Good Use of leftover Bytes
         
                 INCLUDE         disk-io.asm
-                INCLUDE         autostart-loader.asm
+                INCLUDE         disk-save.asm
+                INCLUDE         disk-load.asm
+                INCLUDE         disk-common.asm
+                INCLUDE         loader.asm
+                INCLUDE         pzpause.asm
+                INCLUDE         autostart.asm
 ;
 ;   End of program
 ;

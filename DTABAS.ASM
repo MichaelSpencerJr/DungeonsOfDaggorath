@@ -42,6 +42,7 @@ CMDXXX  MACR
         \1      USE,USE,0,PUSE
         \1      ZLOAD,ZLOA,0,PZLOAD
         \1      ZSAVE,ZSAV,0,PZSAVE
+        \1      ZPAUSE,ZPAU,0,PZPAUS
         ENDM
 *
 *  Debugging Commands Macro
