@@ -777,8 +777,8 @@ SWCTAB  EQU     *               ;where the tables begin
         FCB     %00100000       ; t
         FCB     %00100000       ; t
         FCB     %01110000       ; t
-        FCB     %01110000       ; t
-        FCB     %01110000       ; t
+        FCB     %00100000       ; t
+        FCB     %00100000       ; t
         FCB     %00100100       ; t
         FCB     %00011000       ; t
         FCB     %00000000       ; t
