@@ -41,11 +41,15 @@ PAUTAB		fcb PAUNUM
 FOO     SET     0
         XDEF    T.RSUM,M$RSUM,RESUME,T.GRAM
         XDEF    T.CRED,M$CRED,CREDITS,T.GRAM
+        XDEF    T.RSET,M$RSET,RESET,T.GRAM
+        XDEF    T.EXIT,M$EXIT,EXIT,T.GRAM
 
 PAUNUM  EQU     FOO
 ; Pause mode command jump table
 pause_DISPATCH	fdb PRESUME			; RESUME command
 		fdb PCREDITS			; CREDITS command
+		fdb PRESET			; RESET command
+		fdb PEXIT			; EXIT command
 ; Resume message
 resumemess	fcn 'Use the RESUME command to\rreturn to your game.\r\r'
 ; The credits display12345678901234567890123456789012
@@ -66,6 +70,9 @@ PRESUME		ldx PDSPMD		; restore the dungeon display routine
 		clr PAUSED			; turn off pause mode
 		rts
 
+PRESET		jmp DEMO			; restart demo
+PEXIT		clr >RSTFLG			; do cold start
+		jmp [0xfffe]
 PCREDITS        ldx #credits			; point to credits text
 ; This renders text to the dungeon area
 prendertext	ldu #TXTEXA			; point to info area
