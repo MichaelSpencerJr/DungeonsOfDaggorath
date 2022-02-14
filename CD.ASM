@@ -545,6 +545,7 @@ TXBFLG  RMB     1               ;standard/non-standard i/o flag
 ;
 ZFLAG   RMB     1               ;load/save (-1/1) flag
 PAUSED  RMB     1               ; nonzero = game paused
+PDSPMD	rmb 2				; saved dungeon display pointer in pause
 ;
 ;  SCHEDuler RAM
 ;
