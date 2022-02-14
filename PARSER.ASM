@@ -85,6 +85,12 @@ PARSE0	pshs a,b,x,y,u			; save registers
 		bra PARS02		; go look up keyword
 ; Look up the word at the start of the line  against the keyword list in X. Each keyword list has a prefix byte containing
 ; additional flags, etc.
+UCASE   cmpb    #'a'                    ; is it below lowercase A?
+        blo     UCAS00                  ; brif so - no change
+        cmpb    #'z'                    ; is it above lowercase Z?
+        bhi     UCAS00                  ; brif so
+        subb    #C.SP                   ; make it uppercase
+UCAS00  rts
 PARSER	pshs a,b,x,y,u			; save registers
 		clra				; initialize keyword number
 		clrb				; flag for no match
@@ -98,6 +104,7 @@ PARS10	leay 1,x			; point to start of this keyword
 		ldu #TOKEN			; point to start of parsed word
 PARS20	ldb ,u+				; fetch input character
 		beq PARS40		; brif end of input
+                bsr UCASE               ; make it upper case
 		cmpb ,y+			; does it match?	
 		bne PARS50		; brif it doesn't match
 		tst ,y				; end of keyword?
