@@ -340,10 +340,6 @@ hook_openo	rmb 2				; the address of the "open for output" routine in the Disk R
 error_handler	rmb 2				; the installed error trap
 error_stack	rmb 2				; the stack address to use when transferring control to the error trap
 hook_irq	rmb 2				; the address of the original IRQ routine for Basic
-
-PAUSED  RMB     1               ; nonzero = game paused
-PDSPMD	rmb 2				; saved dungeon display pointer in pause
-
 ; These variables are additional ones used by extensions to the original ROM
 		rmb 256-(*&255)			; align the next bit on a page boundary
 ; These are the original variables used by the system, including the direct page.
@@ -548,6 +544,8 @@ TXBFLG  RMB     1               ;standard/non-standard i/o flag
 ;  LOAD/SAVE Cassette Function Flags
 ;
 ZFLAG   RMB     1               ;load/save (-1/1) flag
+PAUSED  RMB     1               ; nonzero = game paused
+PDSPMD	rmb 2				; saved dungeon display pointer in pause
 ;
 ;  SCHEDuler RAM
 ;

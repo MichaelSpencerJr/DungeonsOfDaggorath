@@ -71,7 +71,6 @@ CINI10  CLR     ,X+             ;zero next location
 ;
         SETDP   DP.BEG/256    ;tell the assembler where our DP resides
 ;
-        CLR     PAUSED
         LDY     #RAMDAT         ;RAM initialization start addr
 CINI20  LDA     ,Y+             ;load byte count
         BEQ     CINI40          ;   we are done

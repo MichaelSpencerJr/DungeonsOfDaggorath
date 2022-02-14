@@ -14,7 +14,12 @@ save_schedtab	fdb PLAYER			; keyboard processor
 		fdb 5				; type 5
 		fdb 0				; save remainder as is
 		fdb CMOVE			; creature movement hanlder
+                fdb 6				; type 6
 		fdb CMXEND			; save as offset into creature table
+; This one is for handling broken save game data from a previous buggy version.
+		fdb CMOVE			; creature movement handler
+		fdb CMXEND-3			; bad type value
+		fdb CCBLND+$9B			; offset into creature table
 save_schedtabe	equ *				; end of table marker
 save_magic	fcc 'DoDL'			; magic number
 		fcb 1				; save game version
