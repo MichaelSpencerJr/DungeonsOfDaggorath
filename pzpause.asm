@@ -23,6 +23,7 @@ PZPAUS	        dec SLEEP       		; freeze the scheduler
 		ldx #resumemess			; advertise resuming
 		jsr prendertext
 		dec UPDATE			; swap live
+		dec RSTART			; force restart of "ready queue" processing to skip any queued monsters
 pausedisplay	rts
 ; This is the puase mode command handler
 pausemodecmd	ldx #PAUTAB			; point to command list
