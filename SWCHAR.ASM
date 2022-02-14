@@ -59,7 +59,7 @@ SWCTAB  EQU     *               ;where the tables begin
         FCB     %01010000       ; $
         FCB     %00111000       ; $
         FCB     %00010100       ; $
-        FCB     %01111011       ; $  FIXME last two 1s should be 0s
+        FCB     %01111000       ; $
         FCB     %00010000       ; $
         FCB     %00000000       ; $
 ;
@@ -205,7 +205,7 @@ SWCTAB  EQU     *               ;where the tables begin
         FCB     %01111100       ; 4
         FCB     %00001000       ; 4
         FCB     %00001000       ; 4
-        FCB     %10010000       ; 4  FIXME should be all zeroes
+        FCB     %00000000       ; 4
 ;
         FCB     %01111100       ; 5
         FCB     %01000000       ; 5
